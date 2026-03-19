@@ -1,6 +1,5 @@
 import Team from "../assets/Team.jpg";
 
-const TC = "#8e1f27";
 const CREAM = "#f5efe7";
 const SAGE = "#617891";
 const COAL = "#1d2535";
