@@ -160,33 +160,43 @@ export default function App() {
                 fontSize: "clamp(28px,4vw,42px)",
               }}
             >
-              Feito com Plantas,
+              Natural na Essência,
               <br />
-              Apoiado pela Ciência,
+              Científico na Fórmula,
               <br />
-              Pronto para Aventura
+              Perfeito para Você
             </h2>
+
             <div className="grid grid-cols-2 gap-3">
-              <div
-                className="row-span-2 rounded flex items-center justify-center text-4xl"
-                style={{ background: "#e0d4c8", minHeight: 200 }}
-              >
-                🧴
+              {/* Large Image */}
+              <div className="row-span-2 rounded overflow-hidden">
+                <img
+                  src="https://picsum.photos/400/500?random=1"
+                  alt="product"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div
-                className="rounded flex items-center justify-center text-4xl"
-                style={{ background: "#d8e8d0", aspectRatio: "1" }}
-              >
-                🌿
+
+              {/* Top Right */}
+              <div className="rounded overflow-hidden aspect-square">
+                <img
+                  src="https://picsum.photos/300/300?random=2"
+                  alt="nature"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div
-                className="rounded flex items-center justify-center text-4xl"
-                style={{ background: "#e8d0c8", aspectRatio: "1" }}
-              >
-                ☀️
+
+              {/* Bottom Right */}
+              <div className="rounded overflow-hidden aspect-square">
+                <img
+                  src="https://picsum.photos/300/300?random=3"
+                  alt="sun"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
+
           {/* Right */}
           <div>
             <p className="text-sm leading-loose text-gray-500 mb-6">
@@ -194,12 +204,15 @@ export default function App() {
               limpos e eficazes que acompanham todas as suas aventuras ao ar
               livre. E o melhor de tudo? Eles realmente funcionam.
             </p>
+
             <a
-              href="#"
+              href="https://wa.me/SEU_NUMERO_AQUI"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs font-medium tracking-widest uppercase pb-0.5 transition-opacity hover:opacity-60"
               style={{ color: TC, borderBottom: `1px solid ${TC}` }}
             >
-              Comprar Produtos
+              Entrar em contato
             </a>
           </div>
         </div>
@@ -310,28 +323,38 @@ export default function App() {
 
       {/* ── Retail Banner ── */}
       <section
-        className="relative text-center text-white px-12 py-20 overflow-hidden"
+        className="relative text-white px-12 py-8 overflow-hidden"
         style={{ background: "linear-gradient(135deg,#8b7355,#4a3828)" }}
+        id="shops"
       >
         <div className="absolute inset-0 bg-black/35" />
-        <div className="relative z-10">
-          <h2
-            className="font-semibold leading-snug mb-5"
-            style={{
-              fontFamily: "'Playfair Display',serif",
-              fontSize: "clamp(22px,4vw,38px)",
-            }}
-          >
-            Sem tempo para esperar?
-            <br />
-            Encontre Makeup em mais de 750 lojas pelo Brasil!
-          </h2>
-          <a
-            href="#"
-            className="inline-block text-white text-xs font-medium tracking-widest uppercase border border-white px-7 py-3 rounded-sm transition-all duration-200 hover:bg-white hover:text-gray-900 mt-2"
-          >
-            Encontrar Loja
-          </a>
+
+        <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          {/* LEFT TEXT */}
+          <div className="text-left">
+            <h2
+              className="font-semibold leading-snug mb-5"
+              style={{
+                fontFamily: "'Playfair Display',serif",
+                fontSize: "clamp(22px,4vw,38px)",
+              }}
+            >
+              Sem tempo para esperar?
+              <br />
+              Encontre Makeup em mais de 750 lojas pelo Brasil!
+            </h2>
+          </div>
+
+          {/* RIGHT MAP */}
+          <div className="w-full h-[300px] md:h-[400px] overflow-hidden shadow-lg">
+            <iframe
+              title="Google Maps Location"
+              src="https://www.google.com/maps?q=São+Paulo&output=embed"
+              className="w-full h-full border-0"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
         </div>
       </section>
 

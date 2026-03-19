@@ -182,7 +182,7 @@ export default function About() {
           Escolha produtos que cuidam de você e do planeta ao mesmo tempo.
         </p>
         <a
-          href="/"
+          href="/#products"
           className="inline-block bg-[#8e1f27] text-white text-sm font-medium tracking-widest uppercase px-10 py-4 rounded hover:bg-[#6F4D38] transition-colors"
         >
           Ver Produtos

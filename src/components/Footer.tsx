@@ -9,7 +9,7 @@ export default function Footer() {
       link: "/about",
     },
     { id: "Blog", name: "Blog", link: "/blog" },
-    { id: "Lojas", name: "Lojas", link: "/shops" },
+    { id: "Lojas", name: "Lojas", link: "/#shops" },
   ];
 
   return (
@@ -33,11 +33,11 @@ export default function Footer() {
             className="italic text-sm leading-relaxed opacity-70"
             style={{ fontFamily: "'Playfair Display',serif" }}
           >
-            Feito com Plantas,
+            Natural na Essência,
             <br />
-            Apoiado pela Ciência,
+            Científico na Fórmula,
             <br />
-            Pronto para Aventura.
+            Perfeito para Você.
           </p>
         </div>
         <div>
