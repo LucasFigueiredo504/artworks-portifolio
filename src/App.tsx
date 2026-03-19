@@ -100,28 +100,6 @@ export default function App() {
         />
         <div className="absolute inset-0 bg-black opacity-40" />
 
-        {/* Navbar */}
-        <nav className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-12 py-5">
-          <a
-            href="#"
-            className="text-white text-2xl tracking-wide"
-            style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400 }}
-          >
-            Makeup
-          </a>
-          <div className="hidden md:flex gap-7 text-xs font-medium tracking-widest uppercase text-white/90">
-            {["Sobre nós"].map((l) => (
-              <a
-                key={l}
-                href="/about"
-                className="hover:text-white transition-colors"
-              >
-                {l}
-              </a>
-            ))}
-          </div>
-        </nav>
-
         {/* Copy */}
         <div className="relative z-10 text-center text-white px-6">
           <p className="text-xs font-medium tracking-widest uppercase mb-3 opacity-90">
@@ -140,7 +118,7 @@ export default function App() {
             Your fave sunscreen is back in stock!
           </p> */}
           <a
-            href="#"
+            href="/#products"
             className="inline-block text-white text-xs font-medium tracking-widest uppercase px-8 py-3 rounded transition-all duration-200 hover:-translate-y-px"
             style={{ background: TC }}
             onMouseEnter={(e) => (e.currentTarget.style.background = TC_L)}
@@ -152,7 +130,7 @@ export default function App() {
       </section>
 
       {/* ── Products ── */}
-      <section className="bg-white py-20 px-12">
+      <section className="bg-white py-20 px-12" id="products">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
           {products.map((p) => (
             <div key={p.name} className="cursor-pointer">

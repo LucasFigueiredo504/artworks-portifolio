@@ -2,6 +2,16 @@ export default function Footer() {
   const TC = "#8e1f27";
   const COAL = "#1d2535";
 
+  const links = [
+    {
+      id: "Sobre",
+      name: "Sobre",
+      link: "/about",
+    },
+    { id: "Blog", name: "Blog", link: "/blog" },
+    { id: "Lojas", name: "Lojas", link: "/shops" },
+  ];
+
   return (
     <div>
       <footer
@@ -35,19 +45,13 @@ export default function Footer() {
             Venha conversar!
           </h4>
           <ul className="flex flex-col gap-2.5">
-            {[
-              "Sobre",
-              "Blog",
-              "Lojas",
-              "Sustentabilidade",
-              "Acessibilidade",
-            ].map((item) => (
-              <li key={item}>
+            {links.map((item) => (
+              <li key={item.id}>
                 <a
-                  href="#"
+                  href={item.link}
                   className="text-sm text-white/70 hover:text-white transition-colors no-underline"
                 >
-                  {item}
+                  {item.name}
                 </a>
               </li>
             ))}

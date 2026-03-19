@@ -16,17 +16,6 @@ export default function About() {
     >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
 
-      {/* Navbar simples */}
-      <nav className="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-8 md:px-12 py-6 bg-gradient-to-b from-black/40 to-transparent">
-        <a
-          href="/"
-          className="text-white text-2xl tracking-wide"
-          style={{ fontFamily: "'Playfair Display',serif" }}
-        >
-          Makeup
-        </a>
-      </nav>
-
       {/* Hero About */}
       <section className="relative flex items-center justify-center px-6 md:px-12 text-center text-white min-h-screen overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#87b5c8] via-[#b5c8a0] to-[#c8d8b8]" />

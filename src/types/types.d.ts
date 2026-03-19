@@ -1,0 +1,8 @@
+export interface Post {
+  slug: string;
+  title: string;
+  date: string;
+  image: string;
+  excerpt: string;
+  body: string;
+}
