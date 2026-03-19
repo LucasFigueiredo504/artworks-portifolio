@@ -1,7 +1,7 @@
 ---
 title: A importância de maquiagens livres de testes em animais
 date: 2026-03-27
-image: /rabbit-4890861_1280.jpg
+image: /images/rabbit-4890861_1280.jpg
 ---
 
 A escolha por maquiagens livres de testes em animais vai muito além de uma tendência: é um posicionamento consciente em favor da vida, da ética e da evolução da indústria da beleza. Durante muitos anos, milhões de animais foram submetidos a testes dolorosos para garantir a segurança de produtos cosméticos, mesmo quando já existiam alternativas mais modernas e seguras.
