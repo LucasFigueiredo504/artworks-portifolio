@@ -1,19 +1,25 @@
 import { useState, useMemo } from "react";
+import { marked } from "marked";
 import type { Post } from "../types/types";
 
-// ─── Brand tokens (mirrored from App.jsx) ────────────────────────────────────
+// ─── Configure marked ─────────────────────────────────────────────────────────
+marked.setOptions({ breaks: true });
+
+// ─── Brand tokens ─────────────────────────────────────────────────────────────
 const TC = "#8e1f27";
 const TC_L = "#9f6e4f";
 const CREAM = "#f7f3ef";
 const SAGE = "#617891";
 const COAL = "#1d2535";
 
-// ─── Glob + parser ───────────────────────────────────────────────────────────
+// ─── Glob (Vite 8 / Rolldown compatible) ─────────────────────────────────────
 const rawFiles = import.meta.glob("../../_posts/*.md", {
-  as: "raw",
+  query: "?raw",
+  import: "default",
   eager: true,
 }) as Record<string, string>;
 
+// ─── Frontmatter parser ───────────────────────────────────────────────────────
 function parseFrontmatter(raw: string): {
   data: Record<string, string>;
   content: string;
@@ -34,13 +40,15 @@ function loadPosts(): Post[] {
     .map(([filePath, raw]) => {
       const { data, content } = parseFrontmatter(raw);
       const slug = filePath.split("/").pop()!.replace(/\.md$/, "");
-      const paragraphs = content.trim().split(/\n\n+/);
+      // Excerpt = first paragraph (strip markdown syntax for plain preview)
+      const firstPara = content.trim().split(/\n\n+/)[0] ?? "";
+      const excerpt = firstPara.replace(/[*_`#>]/g, "").trim();
       return {
         slug,
         title: data.title ?? slug,
         date: data.date ?? "",
         image: data.image ?? "",
-        excerpt: paragraphs[0] ?? "",
+        excerpt,
         body: content.trim(),
       } satisfies Post;
     })
@@ -90,7 +98,6 @@ function FeaturedCard({
         />
       )}
 
-      {/* Overlay */}
       <div
         className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 text-white"
         style={{
@@ -180,8 +187,29 @@ function SmallCard({
 
 // ─── Post Detail ──────────────────────────────────────────────────────────────
 function PostDetail({ post, onBack }: { post: Post; onBack: () => void }) {
+  const htmlBody = useMemo(() => marked(post.body) as string, [post.body]);
+
   return (
     <div>
+      <style>{`
+        .md-body p          { margin-bottom: 1.5rem; line-height: 1.9; font-size: 0.875rem; color: #6b6460; }
+        .md-body strong     { color: ${COAL}; font-weight: 600; }
+        .md-body em         { font-style: italic; }
+        .md-body h1,
+        .md-body h2,
+        .md-body h3         { font-family: 'Playfair Display', serif; color: ${COAL}; margin: 2rem 0 1rem; font-weight: 400; }
+        .md-body h1         { font-size: 1.75rem; }
+        .md-body h2         { font-size: 1.375rem; }
+        .md-body h3         { font-size: 1.125rem; }
+        .md-body ul,
+        .md-body ol         { margin: 0 0 1.5rem 1.5rem; color: #6b6460; font-size: 0.875rem; line-height: 1.9; }
+        .md-body li         { margin-bottom: 0.4rem; }
+        .md-body blockquote { border-left: 3px solid ${TC}; margin: 0 0 1.5rem; padding: 0.5rem 0 0.5rem 1.25rem; color: #9a8f8a; font-style: italic; }
+        .md-body a          { color: ${TC}; text-decoration: underline; }
+        .md-body code       { background: #ede8e3; padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.8rem; }
+        .md-body hr         { border: none; border-top: 1px solid #d8cfc7; margin: 2rem 0; }
+      `}</style>
+
       <section
         className="relative flex items-end overflow-hidden"
         style={{ minHeight: "60vh" }}
@@ -219,11 +247,12 @@ function PostDetail({ post, onBack }: { post: Post; onBack: () => void }) {
 
       <section style={{ background: CREAM }}>
         <div className="max-w-2xl mx-auto px-8 py-20">
-          {post.body.split(/\n\n+/).map((para, i) => (
-            <p key={i} className="text-sm leading-loose text-gray-500 mb-6">
-              {para}
-            </p>
-          ))}
+          {/* ── Rendered Markdown body ── */}
+          <div
+            className="md-body"
+            dangerouslySetInnerHTML={{ __html: htmlBody }}
+          />
+
           <hr className="my-10 border-gray-300" />
           <button
             onClick={onBack}
@@ -252,7 +281,6 @@ function BlogListing({
     <div>
       {/* ── Hero + overlapping featured card ── */}
       <div style={{ position: "relative" }}>
-        {/* Hero */}
         <section
           style={{
             height: "52vh",
@@ -264,7 +292,6 @@ function BlogListing({
             overflow: "hidden",
           }}
         >
-          {/* BOTTOM WAVE ONLY */}
           <svg
             className="absolute bottom-0 left-0 w-full h-[120px]"
             viewBox="0 0 1440 120"
@@ -277,7 +304,6 @@ function BlogListing({
           </svg>
         </section>
 
-        {/* Featured card — absolutely positioned to overlap the hero */}
         {featured && (
           <div
             className="px-12"
@@ -296,10 +322,8 @@ function BlogListing({
         )}
       </div>
 
-      {/* Spacer so content below clears the overlapping card */}
       {featured && <div style={{ height: 280, background: "white" }} />}
 
-      {/* ── More posts ── */}
       {rest.length > 0 && (
         <section style={{ background: CREAM }} className="py-20 px-12">
           <div className="max-w-7xl mx-auto">
