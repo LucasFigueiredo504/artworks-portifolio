@@ -1,4 +1,6 @@
-media: public
+media:
+  input: public/images
+  output: /images
 content:
   - name: posts
     label: Posts
