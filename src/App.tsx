@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "motion/react";
 import prod_1 from "./assets/prod_1.png";
 import prod_2 from "./assets/prod_2.png";
 import prod_3 from "./assets/prod_3.png";
@@ -7,36 +8,25 @@ import makeBanner from "./assets/makeup.jpg";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// Brand tokens — extend these in tailwind.config.js if preferred
-const TC = "#8e1f27";
-const TC_L = "#6F4D38";
-const CREAM = "#f5efe7";
-const SAGE = "#617891";
-const COAL = "#1d2535";
-
 const products = [
   {
     name: "Sunglow SPF 35",
     desc: "Protetor Solar Facial Iluminador",
-    bg: "#f5e8d0",
     img: prod_1,
   },
   {
     name: "Sunglow SPF 35",
     desc: "Protetor Solar Facial Iluminador",
-    bg: "#f5e8d0",
     img: prod_1,
   },
   {
     name: "Relief Potion",
     desc: "Remédio para Picadas de Inseto",
-    bg: "#dff0e8",
     img: prod_2,
   },
   {
     name: "Cloud Cover SPF 35",
     desc: "Protetor Solar Corporal",
-    bg: "#e8f0f5",
     img: prod_3,
   },
 ];
@@ -72,6 +62,20 @@ const safetyItems = [
   },
 ];
 
+// ── Animation variants ────────────────────────────────────────────────────────
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+// Animate once when 20% of element is visible
+const viewport = { once: true, amount: 0.2 };
+
 export default function App() {
   const [idx, setIdx] = useState(0);
   const prev = () =>
@@ -79,17 +83,11 @@ export default function App() {
   const next = () => setIdx((i) => (i + 1) % testimonials.length);
 
   return (
-    <div
-      className="overflow-x-hidden"
-      style={{ fontFamily: "'DM Sans', sans-serif", color: COAL }}
-    >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
-
+    <div className="overflow-x-hidden font-sans text-coal">
       {/* ── Hero ── */}
       <section
-        className="relative flex items-center justify-center overflow-hidden"
+        className="relative flex items-center justify-center overflow-hidden min-h-screen"
         style={{
-          minHeight: "100vh",
           background:
             "linear-gradient(160deg,#a8c8d8 0%,#87b5c8 30%,#c8d8b8 70%,#b5c8a0 100%)",
         }}
@@ -100,65 +98,75 @@ export default function App() {
         />
         <div className="absolute inset-0 bg-black opacity-40" />
 
-        {/* Copy */}
         <div className="relative z-10 text-center text-white px-6">
-          <p className="text-xs font-medium tracking-widest uppercase mb-3 opacity-90">
+          <motion.p
+            className="text-xs font-medium tracking-widest uppercase mb-3 opacity-90"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
             Qual o seu protetor solar glow favorito
-          </p>
-          <h1
-            className="font-normal leading-tight mb-3"
-            style={{
-              fontFamily: "'Playfair Display',serif",
-              fontSize: "clamp(42px,7vw,80px)",
-            }}
+          </motion.p>
+          <motion.h1
+            className="font-display font-normal leading-tight mb-3"
+            style={{ fontSize: "clamp(42px,7vw,80px)" }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
             Sua beleza, suas regras
-          </h1>
-          {/*  <p className="text-sm font-light mb-7 opacity-95">
-            Your fave sunscreen is back in stock!
-          </p> */}
-          <a
-            href="/#products"
-            className="inline-block text-white text-xs font-medium tracking-widest uppercase px-8 py-3 rounded transition-all duration-200 hover:-translate-y-px"
-            style={{ background: TC }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = TC_L)}
-            onMouseLeave={(e) => (e.currentTarget.style.background = TC)}
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.65 }}
           >
-            Ver Produtos
-          </a>
+            <a
+              href="/#products"
+              className="inline-block text-white text-xs font-medium tracking-widest uppercase px-8 py-3 rounded bg-brand hover:bg-brand-hover hover:-translate-y-px transition-all duration-200"
+            >
+              Ver Produtos
+            </a>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Products ── */}
       <section className="bg-white py-20 px-12" id="products">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
-          {products.map((p) => (
-            <div key={p.name} className="cursor-pointer">
+          {products.map((p, i) => (
+            <motion.div
+              key={i}
+              className="cursor-pointer"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewport}
+              transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
+            >
               <img src={p.img} className="h-96 w-full object-cover" />
-
-              <p
-                className="text-sm font-semibold mb-1"
-                style={{ fontFamily: "'Playfair Display',serif" }}
-              >
+              <p className="text-sm font-semibold mb-1 font-display">
                 {p.name}
               </p>
               <p className="text-xs text-gray-400 mb-2">{p.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* ── Brand Story ── */}
-      <section style={{ background: CREAM }}>
+      <section className="bg-cream">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto px-12 py-20">
-          {/* Left */}
-          <div>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <h2
-              className="font-semibold leading-snug mb-6"
-              style={{
-                fontFamily: "'Playfair Display',serif",
-                fontSize: "clamp(28px,4vw,42px)",
-              }}
+              className="font-display font-semibold leading-snug mb-6"
+              style={{ fontSize: "clamp(28px,4vw,42px)" }}
             >
               Natural na Essência,
               <br />
@@ -168,7 +176,6 @@ export default function App() {
             </h2>
 
             <div className="grid grid-cols-2 gap-3">
-              {/* Large Image */}
               <div className="row-span-2 rounded overflow-hidden">
                 <img
                   src="https://picsum.photos/400/500?random=1"
@@ -176,8 +183,6 @@ export default function App() {
                   className="w-full h-full object-cover"
                 />
               </div>
-
-              {/* Top Right */}
               <div className="rounded overflow-hidden aspect-square">
                 <img
                   src="https://picsum.photos/300/300?random=2"
@@ -185,8 +190,6 @@ export default function App() {
                   className="w-full h-full object-cover"
                 />
               </div>
-
-              {/* Bottom Right */}
               <div className="rounded overflow-hidden aspect-square">
                 <img
                   src="https://picsum.photos/300/300?random=3"
@@ -195,35 +198,34 @@ export default function App() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right */}
-          <div>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          >
             <p className="text-sm leading-loose text-gray-500 mb-6">
               De piqueniques no parque a fins de semana fora — fazemos produtos
               limpos e eficazes que acompanham todas as suas aventuras ao ar
               livre. E o melhor de tudo? Eles realmente funcionam.
             </p>
-
             <a
               href="https://wa.me/SEU_NUMERO_AQUI"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-medium tracking-widest uppercase pb-0.5 transition-opacity hover:opacity-60"
-              style={{ color: TC, borderBottom: `1px solid ${TC}` }}
+              className="text-xs font-medium tracking-widest uppercase pb-0.5 transition-opacity hover:opacity-60 text-brand border-b border-brand"
             >
               Entrar em contato
             </a>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Testimonial ── */}
-      <section
-        className="relative py-32 px-12 text-center overflow-hidden"
-        style={{ background: CREAM }}
-      >
-        {/* TOP WAVE */}
+      <section className="relative py-32 px-12 text-center overflow-hidden bg-cream">
         <svg
           className="absolute top-0 left-0 w-full h-[120px]"
           viewBox="0 0 1440 120"
@@ -231,17 +233,12 @@ export default function App() {
         >
           <path
             d="M0,40 C180,100 360,0 540,60 C720,120 900,20 1080,70 C1260,120 1350,40 1440,60 L1440,120 L0,120 Z"
-            fill={SAGE}
+            className="fill-sage"
           />
         </svg>
 
-        {/* SAGE BACKGROUND BAND */}
-        <div
-          className="absolute inset-0 top-[100px] bottom-[100px]"
-          style={{ backgroundColor: SAGE }}
-        />
+        <div className="absolute inset-0 top-[100px] bottom-[100px] bg-sage" />
 
-        {/* BOTTOM WAVE */}
         <svg
           className="absolute bottom-0 left-0 w-full h-[120px]"
           viewBox="0 0 1440 120"
@@ -249,36 +246,45 @@ export default function App() {
         >
           <path
             d="M0,60 C180,20 360,100 540,60 C720,20 900,100 1080,50 C1260,10 1350,80 1440,60 L1440,0 L0,0 Z"
-            fill={SAGE}
+            className="fill-sage"
           />
         </svg>
 
-        {/* CONTENT */}
         <div className="relative z-10 py-10">
           <button
             onClick={prev}
-            className="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl opacity-70 hover:opacity-100 transition-opacity bg-transparent border-none cursor-pointer"
+            className="absolute left-6 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 transition-opacity bg-transparent border-none cursor-pointer"
           >
             <ChevronLeft size={32} />
           </button>
 
-          <blockquote
-            className="italic text-white max-w-xl mx-auto mb-4"
-            style={{
-              fontFamily: "'Playfair Display',serif",
-              fontSize: "clamp(18px,2.5vw,28px)",
-            }}
+          {/* key prop re-triggers animation on slide change */}
+          <motion.blockquote
+            key={idx}
+            className="font-display italic text-white max-w-xl mx-auto mb-4"
+            style={{ fontSize: "clamp(18px,2.5vw,28px)" }}
+            variants={fadeIn}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.4 }}
           >
             {testimonials[idx].quote}
-          </blockquote>
+          </motion.blockquote>
 
-          <p className="text-xs font-medium tracking-widest uppercase text-white/80">
+          <motion.p
+            key={`src-${idx}`}
+            className="text-xs font-medium tracking-widest uppercase text-white/80"
+            variants={fadeIn}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
             {testimonials[idx].source}
-          </p>
+          </motion.p>
 
           <button
             onClick={next}
-            className="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl opacity-70 hover:opacity-100 transition-opacity bg-transparent border-none cursor-pointer"
+            className="absolute right-6 top-1/2 -translate-y-1/2 text-white opacity-70 hover:opacity-100 transition-opacity bg-transparent border-none cursor-pointer"
           >
             <ChevronRight size={32} />
           </button>
@@ -286,21 +292,36 @@ export default function App() {
       </section>
 
       {/* ── Safety / Values ── */}
-      <section style={{ background: CREAM }}>
+      <section className="bg-cream">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto px-12 py-20">
-          <img src={products_img} className="" />
+          <motion.img
+            src={products_img}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          />
 
-          <div>
-            <h2
-              className="font-semibold text-2xl mb-8"
-              style={{ fontFamily: "'Playfair Display',serif" }}
-            >
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          >
+            <h2 className="font-display font-semibold text-2xl mb-8">
               Feito com Segurança para as Pessoas
             </h2>
             {safetyItems.map((item, i) => (
-              <div
+              <motion.div
                 key={item.title}
                 className={`pb-6 mb-6 ${i < safetyItems.length - 1 ? "border-b border-gray-300" : ""}`}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewport}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
               >
                 <h3 className="text-xs font-semibold tracking-widest uppercase mb-2">
                   {item.title}
@@ -310,14 +331,13 @@ export default function App() {
                 </p>
                 <a
                   href="#"
-                  className="text-xs font-medium tracking-widest uppercase pb-0.5"
-                  style={{ borderBottom: `1px solid ${COAL}`, color: COAL }}
+                  className="text-xs font-medium tracking-widest uppercase pb-0.5 border-b border-coal text-coal"
                 >
                   {item.cta}
                 </a>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -330,23 +350,32 @@ export default function App() {
         <div className="absolute inset-0 bg-black/35" />
 
         <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          {/* LEFT TEXT */}
-          <div className="text-left">
+          <motion.div
+            className="text-left"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <h2
-              className="font-semibold leading-snug mb-5"
-              style={{
-                fontFamily: "'Playfair Display',serif",
-                fontSize: "clamp(22px,4vw,38px)",
-              }}
+              className="font-display font-semibold leading-snug mb-5"
+              style={{ fontSize: "clamp(22px,4vw,38px)" }}
             >
               Sem tempo para esperar?
               <br />
               Encontre Makeup em mais de 750 lojas pelo Brasil!
             </h2>
-          </div>
+          </motion.div>
 
-          {/* RIGHT MAP */}
-          <div className="w-full h-[300px] md:h-[400px] overflow-hidden shadow-lg">
+          <motion.div
+            className="w-full h-[300px] md:h-[400px] overflow-hidden shadow-lg"
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewport}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+          >
             <iframe
               title="Google Maps Location"
               src="https://www.google.com/maps?q=São+Paulo&output=embed"
@@ -354,28 +383,33 @@ export default function App() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Instagram ── */}
       <section className="bg-white py-20 px-12 text-center">
-        <h2
-          className="text-3xl font-normal mb-1"
-          style={{ fontFamily: "'Playfair Display',serif" }}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          transition={{ duration: 0.55, ease: "easeOut" }}
         >
-          Vamos nos encontrar
-        </h2>
-        <p className="text-sm text-gray-400 mb-1">
-          Fazemos coisas legais no Instagram.
-        </p>
-        <a
-          href="#"
-          className="text-xs font-medium tracking-widest"
-          style={{ color: TC }}
-        >
-          @Makeup
-        </a>
+          <h2 className="font-display text-3xl font-normal mb-1">
+            Vamos nos encontrar
+          </h2>
+          <p className="text-sm text-gray-400 mb-1">
+            Fazemos coisas legais no Instagram.
+          </p>
+          <a
+            href="#"
+            className="text-xs font-medium tracking-widest text-brand"
+          >
+            @Makeup
+          </a>
+        </motion.div>
+
         <div className="grid grid-cols-3 md:grid-cols-5 gap-1.5 mt-8">
           {[
             { e: "https://picsum.photos/id/10/200", bg: "#e8d4c0" },
@@ -384,12 +418,17 @@ export default function App() {
             { e: "https://picsum.photos/id/78/200", bg: "#e8d8e0" },
             { e: "https://picsum.photos/id/42/200", bg: "#f0e4c8" },
           ].map((c, i) => (
-            <img
+            <motion.img
               key={i}
-              className="aspect-square rounded flex items-center justify-center text-3xl cursor-pointer hover:opacity-80 transition-opacity"
+              className="aspect-square rounded cursor-pointer hover:opacity-80 transition-opacity"
               style={{ background: c.bg }}
               src={c.e}
-            ></img>
+              variants={fadeIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewport}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
+            />
           ))}
         </div>
       </section>

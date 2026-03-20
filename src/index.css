@@ -1,1 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --color-brand: #8e1f27;
+  --color-brand-hover: #6f4d38;
+  --color-cream: #f5efe7;
+  --color-sage: #617891;
+  --color-coal: #1d2535;
+
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Playfair Display", serif;
+}
