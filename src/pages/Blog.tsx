@@ -2,16 +2,8 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { PortableText } from "@portabletext/react";
 import { getPosts, urlFor } from "../lib/sanity";
-
-// ─── Post type ────────────────────────────────────────────────────────────────
-interface Post {
-  slug: string;
-  title: string;
-  date: string;
-  image?: { asset: { _ref: string } };
-  excerpt: string;
-  body: any[];
-}
+import type { Post } from "../types/types";
+import makeImage from "../assets/makeup_2.jpg";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function portableTextToExcerpt(blocks: any[]): string {
@@ -64,7 +56,7 @@ function FeaturedCard({
 
   return (
     <motion.div
-      className="cursor-pointer relative overflow-hidden bg-brand-hover shadow-[0_24px_64px_rgba(0,0,0,0.28)]"
+      className="cursor-pointer relative overflow-hidden bg-brand-hover "
       style={{ height: 520 }}
       onClick={() => onClick(post)}
       onMouseEnter={() => setHovered(true)}
@@ -270,54 +262,77 @@ function BlogListing({
 
   return (
     <div>
-      <div className="relative">
-        <section
-          className="bg-sage flex items-start pt-12 relative overflow-hidden"
-          style={{ height: "52vh" }}
-        >
-          <svg
-            className="absolute bottom-0 left-0 w-full h-[120px]"
-            viewBox="0 0 1440 120"
-            preserveAspectRatio="none"
+      {/* ── Hero (mirrors App.tsx style) ── */}
+      <section className="relative flex items-center justify-center overflow-hidden min-h-screen">
+        <img
+          src={makeImage}
+          alt=""
+          className="absolute top-0 left-0 w-full h-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-black opacity-50" />
+
+        <div className="relative z-10 text-center text-white px-6">
+          <motion.p
+            className="text-xs font-medium tracking-widest uppercase mb-3 opacity-90"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <path
-              d="M0,60 C180,20 360,100 540,60 C720,20 900,100 1080,50 C1260,10 1350,80 1440,60 L1440,120 L0,120 Z"
-              fill="#fff"
-            />
-          </svg>
-        </section>
-
-        {featured && (
-          <div
-            className="px-12 absolute left-0 right-0 z-10"
-            style={{ bottom: "-300px" }}
+            Inspiração, Dicas & Histórias
+          </motion.p>
+          <motion.h1
+            className="font-display font-normal leading-tight mb-6"
+            style={{ fontSize: "clamp(42px,7vw,80px)" }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="max-w-7xl mx-auto">
-              <FeaturedCard post={featured} onClick={onSelect} />
-            </div>
-          </div>
-        )}
-      </div>
+            Blog Makeup
+          </motion.h1>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.65 }}
+          >
+            <a
+              href="#articles"
+              className="inline-block text-white text-xs font-medium tracking-widest uppercase px-8 py-3 rounded bg-brand hover:bg-brand-hover hover:-translate-y-px transition-all duration-200"
+            >
+              Ver Artigos
+            </a>
+          </motion.div>
+        </div>
+      </section>
 
-      {featured && <div className="bg-white" style={{ height: 280 }} />}
-
-      {rest.length > 0 && (
-        <section className="bg-cream py-20 px-12">
+      {/* ── Featured post ── */}
+      {featured && (
+        <section className="bg-cream py-20 px-12" id="articles">
           <div className="max-w-7xl mx-auto">
-            <motion.div
-              className="flex items-center gap-5 mb-12"
-              variants={fadeIn}
+            <FeaturedCard post={featured} onClick={onSelect} />
+          </div>
+        </section>
+      )}
+
+      {/* ── More articles ── */}
+      {rest.length > 0 && (
+        <section className="bg-cream pb-20 px-12">
+          <div className="max-w-7xl mx-auto">
+            {/* Left-aligned dark Playfair heading */}
+            <motion.h3
+              className="text-3xl font-display font-black text-coal mb-12"
+              style={{
+                letterSpacing: "-0.02em",
+              }}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={viewport}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <div className="flex-1 h-px bg-[#d8cfc7]" />
-              <p className="text-xs tracking-widest uppercase text-coal opacity-70">
-                Mais Artigos
-              </p>
-              <div className="flex-1 h-px bg-[#d8cfc7]" />
-            </motion.div>
+              Mais Artigos
+            </motion.h3>
+
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
               {rest.map((p, i) => (
                 <SmallCard

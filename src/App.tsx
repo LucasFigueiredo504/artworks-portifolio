@@ -49,16 +49,19 @@ const safetyItems = [
     title: "Ingredientes",
     body: "Nossos produtos são produzidos com ingredientes limpos e de origem responsável, desenvolvidos com métodos clean-on-human para entregar exatamente o que prometem.",
     cta: "Saiba Mais",
+    link: "/about",
   },
   {
     title: "Sustentabilidade",
     body: "Amamos este planeta tanto quanto você. Por isso somos dedicados a usar materiais eco-conscientes, embalagens pensadas e métodos de envio responsáveis.",
     cta: "Leia Nossa Missão",
+    link: "/about",
   },
   {
     title: "Time",
     body: "Somos um time de pessoas curiosas, apaixonadas, com grandes sonhos de um mundo mais feliz e saudável. Nossa missão é empoderar você para passar mais tempo na natureza.",
     cta: "Conheça Mais",
+    link: "/about",
   },
 ];
 
@@ -330,7 +333,7 @@ export default function App() {
                   {item.body}
                 </p>
                 <a
-                  href="#"
+                  href={item.link}
                   className="text-xs font-medium tracking-widest uppercase pb-0.5 border-b border-coal text-coal"
                 >
                   {item.cta}

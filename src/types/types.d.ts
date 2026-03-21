@@ -2,7 +2,7 @@ export interface Post {
   slug: string;
   title: string;
   date: string;
-  image: string;
+  image?: { asset: { _ref: string } };
   excerpt: string;
-  body: string;
+  body: any[];
 }
