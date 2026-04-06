@@ -1,95 +1,80 @@
-import { motion } from "motion/react";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const viewport = { once: true, amount: 0.3 };
-
 export default function Footer() {
-  const links = [
-    { id: "Sobre", name: "Sobre", link: "/about" },
-    { id: "Blog", name: "Blog", link: "/blog" },
-    { id: "Lojas", name: "Lojas", link: "/#shops" },
-  ];
-
   return (
-    <div>
-      <footer className="grid grid-cols-1 md:grid-cols-2 gap-12 px-12 pt-16 pb-10 bg-coal text-white">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewport}
-          transition={{ duration: 0.55, ease: "easeOut" }}
-        >
-          <p className="font-display font-semibold leading-none mb-4 text-brand text-[52px]">
-            M
-          </p>
-          <p className="font-display italic text-sm leading-relaxed opacity-70">
-            Natural na Essência,
-            <br />
-            Científico na Fórmula,
-            <br />
-            Perfeito para Você.
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewport}
-          transition={{ duration: 0.55, delay: 0.12, ease: "easeOut" }}
-        >
-          <h4 className="text-xs font-medium tracking-widest uppercase mb-4 opacity-50">
-            Venha conversar!
-          </h4>
-          <ul className="flex flex-col gap-2.5">
-            {links.map((item, i) => (
-              <motion.li
-                key={item.id}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewport}
-                transition={{
-                  duration: 0.4,
-                  delay: 0.2 + i * 0.08,
-                  ease: "easeOut",
-                }}
+    <footer className="bg-black border-t border-white/10 py-16 px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          {/* Brand */}
+          <div className="md:col-span-2">
+            <h3 className="font-display text-white text-4xl mb-4 leading-none">
+              TELLAR
+              <br />
+              <span
+                className="text-transparent"
+                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.4)" }}
               >
-                <a
-                  href={item.link}
-                  className="text-sm text-white/70 hover:text-white transition-colors no-underline"
-                >
-                  {item.name}
-                </a>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-      </footer>
+                HEAVEN
+              </span>
+            </h3>
+            <p className="text-white/40 text-xs font-body leading-relaxed max-w-xs mt-4">
+              A visual art studio dedicated to capturing the unrepeatable. Based
+              in New York, working everywhere.
+            </p>
+          </div>
 
-      <motion.div
-        className="text-center py-4 px-12 bg-coal border-t border-white/[0.08]"
-        initial={{ opacity: 1 }}
-        whileInView={{ opacity: 1 }}
-        viewport={viewport}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
-        <p className="text-xs tracking-wide text-white/30">
-          © {new Date().getFullYear()} Makeup. Todos os direitos reservados. ·
-          Política de Privacidade · Desenvolvido por{" "}
-          <a
-            href="https://next-frontend-portifolio.vercel.app/"
-            className="underline"
-          >
-            Lucas Figueiredo
-          </a>
-        </p>
-      </motion.div>
-    </div>
+          {/* Nav links */}
+          <div>
+            <p className="text-yellow-400 text-xs tracking-[0.3em] uppercase font-body mb-6">
+              Navigate
+            </p>
+            <ul className="flex flex-col gap-3">
+              {["Works", "Stories", "Gallery", "Contact"].map((item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase()}`}
+                    className="text-white/50 text-xs tracking-[0.2em] uppercase font-body hover:text-white transition-colors duration-300"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div>
+            <p className="text-yellow-400 text-xs tracking-[0.3em] uppercase font-body mb-6">
+              Social
+            </p>
+            <ul className="flex flex-col gap-3">
+              {["Instagram", "Behance", "X (Twitter)", "LinkedIn"].map(
+                (item) => (
+                  <li key={item}>
+                    <a
+                      href="#"
+                      className="text-white/50 text-xs tracking-[0.2em] uppercase font-body hover:text-yellow-400 transition-colors duration-300"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white/20 text-xs font-body tracking-[0.2em]">
+            © {new Date().getFullYear()} TELLARHEAVEN. All rights reserved.
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+            <p className="text-white/20 text-xs font-body tracking-[0.2em]">
+              Available for commissions
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }

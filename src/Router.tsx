@@ -5,8 +5,6 @@ import RootLayout from "./layouts/RootLayout";
 
 // Pages
 import App from "./App";
-import About from "./pages/About";
-import Blog from "./pages/Blog";
 //import NotFound from "@/pages/NotFound";
 
 const router = createBrowserRouter([
@@ -18,14 +16,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <App />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "/blog",
-        element: <Blog />,
       },
     ],
   },
