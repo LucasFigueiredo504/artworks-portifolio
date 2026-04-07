@@ -1,4 +1,5 @@
 import { Divider } from "./Divider";
+import dragon from "../assets/decorative_dragon_2.svg";
 
 const galleryImages = {
   main: {
@@ -28,7 +29,20 @@ const galleryImages = {
 
 export default function Gallery() {
   return (
-    <div className="relative bg-white">
+    <div className="relative bg-white z-10">
+      <img
+        src={dragon}
+        alt="Dragon decoration"
+        className="absolute -top-32 md:-top-48 -left-8 w-52 md:w-68 pointer-events-none select-none"
+        style={{
+          transform: "scaleY(-1) scaleX(-1)",
+        }}
+      />
+      <img
+        src={dragon}
+        alt="Dragon decoration"
+        className="absolute -bottom-32 md:-bottom-48 -right-8 w-52 md:w-68 pointer-events-none select-none"
+      />
       {/* Top divider — flipped, repeating */}
       <Divider flip />
 
