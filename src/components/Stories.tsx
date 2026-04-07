@@ -1,11 +1,12 @@
+import frame from "../assets/frame.svg";
+
 const stories = [
   {
     id: 1,
     title: "Between Light and Shadow",
     excerpt:
       "A journey into the liminal space where darkness surrenders to luminance. These images capture moments of transition — the breath before dawn, the last gasp of dusk — rendered in painstaking detail.",
-    tag: "Essay",
-    date: "March 2024",
+    updated_date: "March 2024",
     img: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=800&q=80",
   },
   {
@@ -13,8 +14,7 @@ const stories = [
     title: "The Architecture of Silence",
     excerpt:
       "Empty structures speak loudest. In abandoned cathedrals, desolate rooftops, and fog-wrapped bridges, there exists a language older than words — one only the camera can faithfully translate.",
-    tag: "Series",
-    date: "January 2024",
+    updated_date: "January 2024",
     img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
   },
 ];
@@ -43,23 +43,29 @@ export default function Stories() {
                 } gap-12 md:gap-16 items-center`}
               >
                 {/* Image */}
-                <div className="w-full md:w-1/2 overflow-hidden aspect-[4/3] group">
+                <div className="relative w-full md:w-1/2 aspect-[4/3] group overflow-hidden">
                   <img
                     src={story.img}
                     alt={story.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <img
+                    src={frame}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
                   />
                 </div>
 
                 {/* Text */}
                 <div className="w-full md:w-1/2 flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-5">
-                    <span className="text-yellow-500 text-xs tracking-[0.3em] uppercase font-body">
-                      {story.tag}
+                    <span className="text-gray-400 text-xs font-body">
+                      Last Update
                     </span>
                     <span className="w-8 h-px bg-gray-300" />
                     <span className="text-gray-400 text-xs font-body">
-                      {story.date}
+                      {story.updated_date}
                     </span>
                   </div>
                   <h3 className="font-display text-black text-3xl md:text-4xl leading-tight mb-6">
@@ -73,7 +79,6 @@ export default function Stories() {
                     className="group/link inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase font-body text-black hover:text-yellow-500 transition-colors duration-300"
                   >
                     Read Story
-                    <span className="inline-block w-8 h-px bg-current transition-all duration-300 group-hover/link:w-12" />
                   </a>
                 </div>
               </div>

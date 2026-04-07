@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Divider } from "./Divider";
 
 export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -16,58 +17,173 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-screen flex flex-col items-center justify-center bg-black overflow-hidden">
-      {/*     
-      <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "200px",
-        }}
-      /> */}
+    <div className="bg-white">
+      <style>{`
+        @keyframes orbit-wait {
+          0%   { transform: translateX(-50%) translateY(-50%) translateZ(300px); }
+          100% { transform: translateX(-50%) translateY(-50%) translateZ(300px); }
+        }
 
-      {/* Diagonal accent lines */}
-      <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-yellow-400/20 to-transparent ml-[15%]" />
-      <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-yellow-400/10 to-transparent mr-[20%]" />
+        @keyframes orbit-md {
+          0%   { transform: translateX(-50%) translateY(-50%) rotateY(0deg)   translateZ(300px) rotateY(0deg); }
+          100% { transform: translateX(-50%) translateY(-50%) rotateY(360deg) translateZ(300px) rotateY(-360deg); }
+        }
 
-      {/* Glowing circle */}
-      <div className="absolute w-[600px] h-[600px] rounded-full border border-yellow-400/5 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute w-[400px] h-[400px] rounded-full border border-yellow-400/10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+        @keyframes orbit-fade {
+          0%   { opacity: 1; }
+          25%  { opacity: 0.4; }
+          50%  { opacity: 0.0; }
+          75%  { opacity: 0.4; }
+          100% { opacity: 1; }
+        }
 
-      {/* Subtitle above */}
-      <p className="text-yellow-400 tracking-[0.5em] uppercase text-xs mb-8 opacity-80 font-body">
-        — Illustrator —
-      </p>
+        .planet-ring {
+          animation:
+            orbit-wait 2s linear 1,
+            orbit-md   60s linear infinite 2s,
+            orbit-fade 60s linear infinite 2s;
+        }
 
-      {/* Main Title */}
-      <h1
-        ref={titleRef}
-        className="font-display text-center leading-none select-none"
-        style={{
-          fontSize: "clamp(3.5rem, 12vw, 10rem)",
-          letterSpacing: "-0.02em",
-        }}
-      >
-        <span className="block text-white">TELLAR</span>
-        <span
-          className="block text-transparent"
+        .planet-core {
+          animation:
+            orbit-wait 2s linear 1,
+            orbit-md   60s linear infinite 2s;
+        }
+
+        .inner-border-fade {
+          animation: orbit-fade 60s linear infinite 2s;
+        }
+
+        .orbit-scene {
+          perspective: 600px;
+        }
+        .orbit-stage {
+          transform-style: preserve-3d;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 0;
+          height: 0;
+        }
+      `}</style>
+
+      <section className="relative h-screen flex flex-col items-center justify-center bg-black overflow-hidden">
+        <div
+          className="orbit-scene absolute"
+          style={{ width: "100%", height: "100%", top: 0, left: 0 }}
+        >
+          <div className="orbit-stage">
+            {/* Star */}
+            <div
+              style={{
+                position: "absolute",
+                width: "50px",
+                height: "50px",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%) translateZ(1px)",
+                borderRadius: "9999px",
+                backgroundColor: "rgb(250,204,21)",
+                boxShadow: `
+                  0 0 50px rgba(250,204,21,1),
+                  0 0 70px rgba(250,204,21,0.8),
+                  0 0 90px rgba(250,204,21,0.6)
+                `,
+              }}
+            />
+
+            {/* Outer ring — fades with orbit */}
+            <div
+              className="planet-ring"
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                width: "350px",
+                height: "350px",
+                borderRadius: "9999px",
+                border: "1px solid rgb(250,204,21)",
+              }}
+            />
+
+            {/* Inner black core — orbits, black fill stays solid */}
+            <div
+              className="planet-core"
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                width: "350px",
+                height: "350px",
+                borderRadius: "9999px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {/* Black fill — never fades */}
+              <div
+                style={{
+                  position: "absolute",
+                  width: "280px",
+                  height: "280px",
+                  borderRadius: "9999px",
+                  background: "black",
+                  flexShrink: 0,
+                }}
+              />
+              {/* Border only — fades independently */}
+              <div
+                className="inner-border-fade"
+                style={{
+                  position: "absolute",
+                  width: "280px",
+                  height: "280px",
+                  borderRadius: "9999px",
+                  border: "1px solid rgb(250,204,21)",
+                  flexShrink: 0,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* UI */}
+        <p
+          className="text-yellow-400 tracking-[0.5em] uppercase text-xs mb-8 opacity-80 font-body"
+          style={{ position: "relative", zIndex: 2 }}
+        >
+          — Illustrator —
+        </p>
+
+        <h1
+          ref={titleRef}
+          className="font-display text-center leading-none select-none"
           style={{
-            WebkitTextStroke: "1px rgba(255,255,255,0.6)",
+            fontSize: "clamp(3.5rem, 9vw, 7rem)",
+            letterSpacing: "-0.02em",
+            position: "relative",
+            zIndex: 2,
           }}
         >
-          HEAVEN
-        </span>
-      </h1>
+          <span className="block text-white">TELLAR</span>
+          <span
+            className="block text-transparent"
+            style={{ WebkitTextStroke: "1px rgba(255,255,255,0.6)" }}
+          >
+            HEAVEN
+          </span>
+        </h1>
 
-      {/* Decorative line */}
-      <div className="w-24 h-px bg-yellow-400 mt-10 mb-6" />
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
-        <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent animate-pulse" />
-      </div>
-    </section>
+        <div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30"
+          style={{ zIndex: 2 }}
+        >
+          <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+          <div className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent animate-pulse" />
+        </div>
+      </section>
+      <Divider />
+    </div>
   );
 }

@@ -5,7 +5,6 @@ export default function Contact() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
 
@@ -13,15 +12,15 @@ export default function Contact() {
     e.preventDefault();
     setSent(true);
     setTimeout(() => setSent(false), 4000);
-    setForm({ name: "", email: "", subject: "", message: "" });
+    setForm({ name: "", email: "", message: "" });
   };
 
   const inputClass =
     "w-full bg-transparent border-b border-gray-300 py-3 text-black placeholder-gray-400 text-sm font-body focus:outline-none focus:border-yellow-500 transition-colors duration-300";
 
   return (
-    <section id="contact" className="bg-white py-24">
-      <div className="max-w-2xl mx-auto px-8">
+    <section id="contact" className="bg-white py-24 relative overflow-hidden">
+      <div className="max-w-2xl mx-auto px-8 relative">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="font-display text-black text-5xl md:text-7xl leading-none">
@@ -29,8 +28,8 @@ export default function Contact() {
           </h2>
           <div className="w-16 h-px bg-yellow-400 mx-auto mt-6 mb-6" />
           <p className="text-gray-400 text-sm font-body max-w-md mx-auto leading-relaxed">
-            For commissions, collaborations, or simply to share what moves you —
-            I'd love to hear from you.
+            For commissions, collaborations, or simply to say hello.
+            <br /> I'd love to hear from you.
           </p>
         </div>
 
@@ -54,13 +53,7 @@ export default function Contact() {
               className={inputClass}
             />
           </div>
-          <input
-            type="text"
-            placeholder="Subject"
-            value={form.subject}
-            onChange={(e) => setForm({ ...form, subject: e.target.value })}
-            className={inputClass}
-          />
+
           <textarea
             placeholder="Your message..."
             rows={5}
@@ -69,6 +62,7 @@ export default function Contact() {
             required
             className={`${inputClass} resize-none`}
           />
+
           <div className="text-center">
             <button
               type="submit"

@@ -1,4 +1,4 @@
-import divider from "../assets/divider.svg";
+import { Divider } from "./Divider";
 
 const galleryImages = {
   main: {
@@ -26,27 +26,11 @@ const galleryImages = {
   ],
 };
 
-const DividerRepeating = ({ flip = false }: { flip?: boolean }) => (
-  <div
-    className="w-full"
-    style={{
-      height: "80px",
-      margin: "-40px 0",
-      backgroundImage: `url(${divider})`,
-      backgroundRepeat: "repeat-x",
-      backgroundSize: "auto 100%",
-      backgroundPosition: "center",
-      filter: "brightness(0)",
-      transform: flip ? "scaleY(-1)" : undefined,
-    }}
-  />
-);
-
 export default function Gallery() {
   return (
     <div className="relative bg-white">
       {/* Top divider — flipped, repeating */}
-      <DividerRepeating flip />
+      <Divider flip />
 
       <section id="gallery" className="bg-black py-24">
         <div className="max-w-7xl mx-auto px-8">
@@ -115,7 +99,7 @@ export default function Gallery() {
       </section>
 
       {/* Bottom divider — normal, repeating */}
-      <DividerRepeating />
+      <Divider />
     </div>
   );
 }

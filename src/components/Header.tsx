@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import divider from "../assets/divider.svg";
+import logo from "/logoPng.png";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -40,9 +41,11 @@ export default function Header() {
           />
 
           {/* Content always on top */}
-          <span className="relative font-display text-sm tracking-[0.3em] uppercase text-white">
-            TH
-          </span>
+          <img
+            src={logo}
+            alt="Tellar Heaven"
+            className="relative h-10 w-auto object-contain"
+          />
           <nav className="relative hidden md:flex gap-10 text-xs tracking-[0.25em] uppercase text-white">
             {["Works", "Stories", "Gallery", "Contact"].map((item) => (
               <a
