@@ -22,11 +22,11 @@ const router = createBrowserRouter([
         element: <App />,
       },
       {
-        path: "produto/:slug",
+        path: "file/:slug",
         element: <FilePage />,
       },
       {
-        path: "stories/:id",
+        path: "stories/:slug",
         element: <StoryPage />,
       },
       {

@@ -57,7 +57,7 @@ export default function LatestWorks() {
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <section id="works" className="bg-white py-24 overflow-hidden">
+    <section id="latest" className="bg-white py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8">
         {/* Section header */}
         <div className="text-center mb-16">

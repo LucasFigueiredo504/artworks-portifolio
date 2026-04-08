@@ -49,12 +49,12 @@ export default function Footer() {
                     to="/#works"
                     className="text-white/50 text-xs tracking-[0.2em] uppercase font-body hover:text-yellow-400 transition-colors duration-300"
                   >
-                    Works
+                    Latest Works
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/#stories"
+                    to="/stories"
                     className="text-white/50 text-xs tracking-[0.2em] uppercase font-body hover:text-yellow-400 transition-colors duration-300"
                   >
                     Stories

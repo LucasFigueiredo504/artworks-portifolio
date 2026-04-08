@@ -27,10 +27,16 @@ export const stories: Story[] = [
     last_updated_at: "2026-04-08T00:00:00-03:00",
     sections: [
       {
-        type: "text",
+        type: "text-image",
         text: "After betraying his friends, Fuwen reach his goals by becoming the new ruler of Darkness.",
         image: imageFiles[1],
         alignment: "right",
+      },
+      {
+        type: "text-image",
+        text: "After betraying his friends, Fuwen reach his goals by becoming the new ruler of Darkness.",
+        image: imageFiles[1],
+        alignment: "left",
       },
     ],
   },

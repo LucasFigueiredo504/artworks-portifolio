@@ -228,10 +228,6 @@ export function GalleryPage() {
                   </h3>
                 </div>
 
-                {/* Corner accents */}
-                <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
                 {/* Expand icon */}
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="w-8 h-8 border border-yellow-400/60 flex items-center justify-center">
@@ -249,16 +245,6 @@ export function GalleryPage() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Count */}
-          <div className="text-center mt-12">
-            <p className="text-black/30 text-xs tracking-[0.3em] uppercase font-body">
-              {filtered.length} {filtered.length === 1 ? "work" : "works"}
-              {activeCategory !== "All"
-                ? ` in ${activeCategory}`
-                : " in collection"}
-            </p>
           </div>
         </div>
       </section>

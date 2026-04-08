@@ -1,49 +1,33 @@
+import { useState } from "react";
 import { Divider } from "./Divider";
 import dragon from "../assets/decorative_dragon_2.svg";
-
-const galleryImages = {
-  main: {
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
-    title: "Ethereal Peaks",
-    category: "Landscape",
-  },
-  small: [
-    {
-      src: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=400&q=80",
-      title: "Wild Bloom",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
-      title: "Desert Void",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&q=80",
-      title: "Starfall",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1534531173927-aeb928d54385?w=400&q=80",
-      title: "Wave Break",
-    },
-  ],
-};
+import { imageFiles } from "../lib/files";
+import { Link } from "react-router-dom";
 
 export default function Gallery() {
+  // Pick random main image once
+  const [mainIndex] = useState(() =>
+    Math.floor(Math.random() * imageFiles.length),
+  );
+
+  const mainImage = imageFiles[mainIndex];
+  const smallImages = imageFiles.filter((_, i) => i !== mainIndex);
+
   return (
     <div className="relative bg-white z-10">
+      {/* Dragon decorations */}
       <img
         src={dragon}
         alt="Dragon decoration"
         className="absolute -top-32 md:-top-48 -left-8 w-52 md:w-68 pointer-events-none select-none"
-        style={{
-          transform: "scaleY(-1) scaleX(-1)",
-        }}
+        style={{ transform: "scaleY(-1) scaleX(-1)" }}
       />
       <img
         src={dragon}
         alt="Dragon decoration"
         className="absolute -bottom-32 md:-bottom-48 -right-8 w-52 md:w-68 pointer-events-none select-none"
       />
-      {/* Top divider — flipped, repeating */}
+
       <Divider flip />
 
       <section id="gallery" className="bg-black py-24">
@@ -58,32 +42,37 @@ export default function Gallery() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Big left image */}
-            <div className="relative overflow-hidden group cursor-pointer md:row-span-2 aspect-[3/4] md:aspect-auto">
+            {/* Big main image */}
+            <Link
+              to={`/file/${mainImage.slug}`}
+              className="relative overflow-hidden group cursor-pointer md:row-span-2 w-full"
+              style={{ maxHeight: "600px" }} // Limit the height
+            >
               <img
-                src={galleryImages.main.src}
-                alt={galleryImages.main.title}
+                src={mainImage.image}
+                alt={mainImage.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                 <span className="text-yellow-400 text-xs tracking-[0.3em] uppercase font-body mb-2">
-                  {galleryImages.main.category}
+                  {mainImage.category}
                 </span>
                 <h3 className="font-display text-white text-3xl">
-                  {galleryImages.main.title}
+                  {mainImage.title}
                 </h3>
               </div>
-            </div>
+            </Link>
 
-            {/* Small right grid */}
+            {/* Small images */}
             <div className="grid grid-cols-2 gap-4">
-              {galleryImages.small.map((img, i) => (
-                <div
+              {smallImages.map((img, i) => (
+                <Link
                   key={i}
+                  to={`/file/${img.slug}`}
                   className="relative overflow-hidden group cursor-pointer aspect-square"
                 >
                   <img
-                    src={img.src}
+                    src={img.image}
                     alt={img.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -92,9 +81,7 @@ export default function Gallery() {
                       {img.title}
                     </span>
                   </div>
-                  <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -112,7 +99,6 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Bottom divider — normal, repeating */}
       <Divider />
     </div>
   );

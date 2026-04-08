@@ -66,14 +66,14 @@ export default function Header() {
           {/* Nav */}
           <nav className="relative hidden md:flex gap-10 text-xs tracking-[0.25em] uppercase text-white">
             <a
-              href="/#works"
+              href="/#latest"
               className="hover:text-yellow-400 transition-colors duration-300"
             >
-              Works
+              Latest Works
             </a>
 
             <a
-              href="/#stories"
+              href="/stories"
               className="hover:text-yellow-400 transition-colors duration-300"
             >
               Stories
