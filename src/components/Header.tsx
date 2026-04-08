@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation, Link } from "react-router-dom";
 import divider from "../assets/divider.svg";
 import logo from "/logoPng.png";
 
@@ -8,7 +9,12 @@ export default function Header() {
   const [visible, setVisible] = useState(true);
   const lastScrollY = useRef(0);
 
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   useEffect(() => {
+    if (!isHome) return;
+
     const handleScroll = () => {
       const current = window.scrollY;
 
@@ -24,39 +30,71 @@ export default function Header() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHome]);
 
   return (
     <>
       <div
         className="fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ease-in-out overflow-hidden"
-        style={{ transform: visible ? "translateY(0)" : "translateY(-110%)" }}
+        style={{
+          transform: isHome
+            ? visible
+              ? "translateY(0)"
+              : "translateY(-110%)"
+            : "translateY(0)",
+        }}
       >
-        {/* Bar — bg fades at top, text/nav always visible */}
+        {/* Bar */}
         <div className="relative flex items-center justify-between px-8 pt-5 pb-2">
-          {/* Black bg that fades */}
+          {/* Background (FIXED) */}
           <div
-            className="absolute inset-0 bg-black transition-opacity duration-500"
-            style={{ opacity: atTop ? 0 : 1 }}
+            className="absolute inset-0 bg-black transition-opacity duration-500 pointer-events-none"
+            style={{
+              opacity: isHome ? (atTop ? 0 : 1) : 1,
+            }}
           />
 
-          {/* Content always on top */}
-          <img
-            src={logo}
-            alt="Tellar Heaven"
-            className="relative h-10 w-auto object-contain"
-          />
+          {/* Logo */}
+          <Link to="/" className="relative">
+            <img
+              src={logo}
+              alt="Tellar Heaven"
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
+
+          {/* Nav */}
           <nav className="relative hidden md:flex gap-10 text-xs tracking-[0.25em] uppercase text-white">
-            {["Works", "Stories", "Gallery", "Contact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="hover:text-yellow-400 transition-colors duration-300"
-              >
-                {item}
-              </a>
-            ))}
+            <a
+              href="/#works"
+              className="hover:text-yellow-400 transition-colors duration-300"
+            >
+              Works
+            </a>
+
+            <a
+              href="/#stories"
+              className="hover:text-yellow-400 transition-colors duration-300"
+            >
+              Stories
+            </a>
+
+            <Link
+              to="/gallery"
+              className="hover:text-yellow-400 transition-colors duration-300"
+            >
+              Gallery
+            </Link>
+
+            <a
+              href="/#contact"
+              className="hover:text-yellow-400 transition-colors duration-300"
+            >
+              Contact
+            </a>
           </nav>
+
+          {/* Mobile button */}
           <button
             className="relative md:hidden flex flex-col gap-1.5 cursor-pointer"
             onClick={() => setOpen(!open)}
@@ -67,9 +105,9 @@ export default function Header() {
           </button>
         </div>
 
-        {/* SVG divider — fades with bg */}
+        {/* Divider */}
         <div
-          className="w-full transition-opacity duration-500"
+          className="w-full transition-opacity duration-500 pointer-events-none"
           style={{
             height: "80px",
             margin: "-35px 0",
@@ -78,12 +116,12 @@ export default function Header() {
             backgroundSize: "auto 100%",
             backgroundPosition: "center",
             filter: "brightness(0)",
-            opacity: atTop ? 0 : 1,
+            opacity: isHome ? (atTop ? 0 : 1) : 1,
           }}
         />
       </div>
 
-      {/* Mobile fullscreen menu */}
+      {/* Mobile menu */}
       {open && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center gap-8">
           <button
@@ -92,16 +130,38 @@ export default function Header() {
           >
             ×
           </button>
-          {["Works", "Stories", "Gallery", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onClick={() => setOpen(false)}
-              className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
-            >
-              {item}
-            </a>
-          ))}
+
+          <a
+            href="/#works"
+            onClick={() => setOpen(false)}
+            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
+          >
+            Works
+          </a>
+
+          <a
+            href="/#stories"
+            onClick={() => setOpen(false)}
+            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
+          >
+            Stories
+          </a>
+
+          <Link
+            to="/gallery"
+            onClick={() => setOpen(false)}
+            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
+          >
+            Gallery
+          </Link>
+
+          <a
+            href="/#contact"
+            onClick={() => setOpen(false)}
+            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
+          >
+            Contact
+          </a>
         </div>
       )}
     </>

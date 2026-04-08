@@ -1,11 +1,11 @@
 import frame from "../assets/frame.svg";
 import { stories } from "../lib/stories";
 
-export default function Stories() {
-  const displayed = stories.slice(0, 2);
+export default function StoriesPage() {
+  const displayed = stories;
 
   return (
-    <section id="stories" className="bg-white py-24">
+    <section id="stories" className="bg-white py-32">
       <div className="max-w-7xl mx-auto px-8">
         {/* Header */}
         <div className="text-center mb-20">
@@ -77,16 +77,6 @@ export default function Stories() {
               </div>
             );
           })}
-        </div>
-
-        {/* See all */}
-        <div className="text-center mt-20">
-          <a
-            href="/stories"
-            className="inline-block border border-black text-black px-12 py-4 text-xs tracking-[0.3em] uppercase font-body hover:bg-black hover:text-white transition-colors duration-400"
-          >
-            See All Stories
-          </a>
         </div>
       </div>
     </section>
