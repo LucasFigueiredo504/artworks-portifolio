@@ -1,86 +1,38 @@
 import { useState } from "react";
 
-const categories = [
-  "All",
-  "Landscape",
-  "Portrait",
-  "Abstract",
-  "Urban",
-  "Nature",
-];
+import artemia from "../assets/drawings/the_sacred_tree_of_eternity_by_tellarheaven.jpg";
+import coronation from "../assets/drawings/coronation_of_the_ruler_of_darkness_by_tellarheaven.jpg";
+import taliaria from "../assets/drawings/taliaria__horror_of_the_sharp_waves.jpg";
+import ulquiorra from "../assets/drawings/ulquiorra_segunda_etapa__fanart.jpg";
+import artwen from "../assets/drawings/tellarrebels_fusion_artwem.jpg";
+
+const categories = ["All", "Original character", "Fanart"];
 
 const allImages = [
   {
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
-    title: "Ethereal Peaks",
-    category: "Landscape",
-    size: "large",
+    src: artemia,
+    title: "Artemia Guardian Goddess of the sacred light",
+    category: "Original character",
   },
   {
-    src: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=600&q=80",
-    title: "Wild Bloom",
-    category: "Nature",
-    size: "small",
+    src: coronation,
+    title: "Coronation of the ruler of darkness",
+    category: "Original character",
   },
   {
-    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-    title: "Desert Void",
-    category: "Landscape",
-    size: "small",
+    src: ulquiorra,
+    title: "Ulquiorra Segunda Etapa",
+    category: "Fanart",
   },
   {
-    src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80",
-    title: "Starfall",
-    category: "Abstract",
-    size: "large",
+    src: taliaria,
+    title: "Taliaria, Horror of the Sharp Waves",
+    category: "Original character",
   },
   {
-    src: "https://images.unsplash.com/photo-1534531173927-aeb928d54385?w=600&q=80",
-    title: "Wave Break",
-    category: "Nature",
-    size: "small",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=600&q=80",
-    title: "Forest Light",
-    category: "Nature",
-    size: "small",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
-    title: "Silent Architecture",
-    category: "Urban",
-    size: "large",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80",
-    title: "City Spine",
-    category: "Urban",
-    size: "small",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80",
-    title: "Portrait I",
-    category: "Portrait",
-    size: "small",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80",
-    title: "Portrait II",
-    category: "Portrait",
-    size: "small",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
-    title: "Portrait III",
-    category: "Portrait",
-    size: "small",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=800&q=80",
-    title: "Colour Fields",
-    category: "Abstract",
-    size: "large",
+    src: artwen,
+    title: "TellarRebels Fusion Artwem",
+    category: "Original character",
   },
 ];
 
@@ -88,7 +40,6 @@ type Image = {
   src: string;
   title: string;
   category: string;
-  size: string;
 };
 
 function LightboxModal({
@@ -139,7 +90,7 @@ function LightboxModal({
         onClick={(e) => e.stopPropagation()}
       >
         <img
-          src={image.src.replace(/w=\d+/, "w=1200")}
+          src={image.src}
           alt={image.title}
           className="max-w-full max-h-[85vh] object-contain"
         />
@@ -176,7 +127,6 @@ export function GalleryPage() {
 
   return (
     <div className="bg-white">
-      {/* Main gallery section */}
       <section className="bg-white py-32">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-20">
@@ -185,6 +135,7 @@ export function GalleryPage() {
             </h2>
             <div className="w-16 h-px bg-yellow-400 mx-auto mt-6" />
           </div>
+
           {/* Category filter */}
           <div className="flex flex-wrap justify-center gap-2 mb-16">
             {categories.map((cat) => (
@@ -202,20 +153,18 @@ export function GalleryPage() {
             ))}
           </div>
 
-          {/* Masonry-style grid */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+          {/* Uniform square grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((img, i) => (
               <div
                 key={`${img.title}-${i}`}
-                className="relative overflow-hidden group cursor-pointer break-inside-avoid"
+                className="relative aspect-square overflow-hidden group cursor-pointer"
                 onClick={() => openLightbox(i)}
               >
                 <img
                   src={img.src}
                   alt={img.title}
-                  className={`w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
-                    img.size === "large" ? "aspect-[3/4]" : "aspect-square"
-                  }`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Hover overlay */}

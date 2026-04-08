@@ -1,56 +1,22 @@
+import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const works = [
-  {
-    id: 1,
-    title: "Celestial Forms",
-    category: "Photography",
-    year: "2024",
-    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
-  },
-  {
-    id: 2,
-    title: "Void Architecture",
-    category: "Digital Art",
-    year: "2024",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-  },
-  {
-    id: 3,
-    title: "Neon Bloom",
-    category: "Mixed Media",
-    year: "2023",
-    img: "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=600&q=80",
-  },
-  {
-    id: 4,
-    title: "Shadow Requiem",
-    category: "Photography",
-    year: "2023",
-    img: "https://images.unsplash.com/photo-1534531173927-aeb928d54385?w=600&q=80",
-  },
-  {
-    id: 5,
-    title: "Golden Hour Opus",
-    category: "Fine Art",
-    year: "2024",
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
-  },
-  {
-    id: 6,
-    title: "Temporal Drift",
-    category: "Digital Art",
-    year: "2023",
-    img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80",
-  },
-];
+import { imageFiles } from "../lib/files";
+
+const works = imageFiles.slice(-5);
 
 export default function LatestWorks() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "start", slidesToScroll: 1 },
-    [Autoplay({ delay: 3000, stopOnInteraction: false })],
+    { loop: true, align: "start", slidesToScroll: 1, dragFree: true },
+    [
+      Autoplay({
+        delay: 2500,
+        stopOnInteraction: false,
+        stopOnMouseEnter: false,
+      }),
+    ],
   );
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
@@ -59,7 +25,7 @@ export default function LatestWorks() {
   return (
     <section id="latest" className="bg-white py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8">
-        {/* Section header */}
+        {/* Header */}
         <div className="text-center mb-16">
           <h2 className="font-display text-black text-5xl md:text-7xl leading-none">
             Latest Works
@@ -69,38 +35,48 @@ export default function LatestWorks() {
 
         {/* Carousel */}
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-6">
-            {works.map((work) => (
-              <div
-                key={work.id}
-                className="flex-none w-[80vw] md:w-[35vw] lg:w-[28vw] group cursor-pointer"
+          <div className="flex gap-4">
+            {works.map((work, i) => (
+              <a
+                key={i}
+                href={`/${work.slug}`}
+                className="flex-none w-[80vw] md:w-[40vw] lg:w-[28vw] group cursor-pointer"
               >
-                <div className="overflow-hidden aspect-[3/4] relative mb-5">
+                {/* Square image */}
+                <div className="relative aspect-square overflow-hidden mb-5">
                   <img
-                    src={work.img}
+                    src={work.image}
                     alt={work.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500 flex items-center justify-center">
-                    <span className="text-white text-xs tracking-[0.3em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      View Project
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                    <span className="text-yellow-400 text-xs tracking-[0.3em] uppercase font-body mb-1">
+                      {work.category}
                     </span>
-                  </div>
-                </div>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-display text-black text-xl mb-1">
+                    <h3 className="font-display text-white text-xl">
                       {work.title}
                     </h3>
-                    <p className="text-gray-400 text-xs tracking-[0.2em] uppercase font-body">
-                      {work.category}
-                    </p>
                   </div>
-                  <span className="text-yellow-500 text-xs font-body mt-1">
-                    {work.year}
-                  </span>
+
+                  {/* Expand icon */}
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-8 h-8 border border-yellow-400/60 flex items-center justify-center">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        stroke="rgb(250,204,21)"
+                        strokeWidth="1.5"
+                      >
+                        <path d="M2 1H1v1M10 1h1v1M2 11H1v-1M10 11h1v-1" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -109,17 +85,17 @@ export default function LatestWorks() {
         <div className="flex items-center justify-center gap-6 mt-12">
           <button
             onClick={scrollPrev}
-            className="w-12 h-12 border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 text-black text-lg"
+            className="w-12 h-12 border border-black text-black hover:text-yellow-500 hover:border-yellow-400 transition-colors duration-300 flex items-center justify-center select-none"
             aria-label="Previous"
           >
-            ←
+            <ChevronLeft size={20} strokeWidth={1.5} />
           </button>
           <button
             onClick={scrollNext}
-            className="w-12 h-12 border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 text-black text-lg"
+            className="w-12 h-12 border border-black text-black hover:text-yellow-500 hover:border-yellow-400 transition-colors duration-300 flex items-center justify-center select-none"
             aria-label="Next"
           >
-            →
+            <ChevronRight size={20} strokeWidth={1.5} />
           </button>
         </div>
       </div>

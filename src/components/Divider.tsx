@@ -5,7 +5,7 @@ export const Divider = ({ flip = false }: { flip?: boolean }) => (
     className="w-full"
     style={{
       height: "80px",
-      margin: "-35px 0",
+      margin: "-40px 0",
       backgroundImage: `url(${divider})`,
       backgroundRepeat: "repeat-x",
       backgroundSize: "auto 100%",

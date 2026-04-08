@@ -29,3 +29,16 @@ body {
   background: #facc15;
   border-radius: 2px;
 }
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.star-twinkle {
+  animation: twinkle var(--duration) ease-in-out infinite;
+}

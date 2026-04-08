@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Divider } from "./Divider";
+import { StarField } from "./StarsBg";
 
 export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -17,18 +18,16 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="bg-white">
+    <div className="relative ">
       <style>{`
         @keyframes orbit-wait {
           0%   { transform: translateX(-50%) translateY(-50%) translateZ(300px); }
           100% { transform: translateX(-50%) translateY(-50%) translateZ(300px); }
         }
-
         @keyframes orbit-md {
           0%   { transform: translateX(-50%) translateY(-50%) rotateY(0deg)   translateZ(300px) rotateY(0deg); }
           100% { transform: translateX(-50%) translateY(-50%) rotateY(360deg) translateZ(300px) rotateY(-360deg); }
         }
-
         @keyframes orbit-fade {
           0%   { opacity: 1; }
           25%  { opacity: 0.4; }
@@ -36,38 +35,31 @@ export default function Hero() {
           75%  { opacity: 0.4; }
           100% { opacity: 1; }
         }
-
         .planet-ring {
           animation:
             orbit-wait 2s linear 1,
             orbit-md   60s linear infinite 2s,
             orbit-fade 60s linear infinite 2s;
         }
-
         .planet-core {
           animation:
             orbit-wait 2s linear 1,
             orbit-md   60s linear infinite 2s;
         }
-
         .inner-border-fade {
           animation: orbit-fade 60s linear infinite 2s;
         }
-
-        .orbit-scene {
-          perspective: 600px;
-        }
+        .orbit-scene { perspective: 600px; }
         .orbit-stage {
           transform-style: preserve-3d;
           position: absolute;
-          left: 50%;
-          top: 50%;
-          width: 0;
-          height: 0;
+          left: 50%; top: 50%;
+          width: 0; height: 0;
         }
       `}</style>
-
-      <section className="relative h-screen flex flex-col items-center justify-center bg-black overflow-hidden">
+      {/* StarField is now a sibling of section, both inside relative wrapper */}
+      <StarField />
+      <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
         <div
           className="orbit-scene absolute"
           style={{ width: "100%", height: "100%", top: 0, left: 0 }}
@@ -91,8 +83,7 @@ export default function Hero() {
                 `,
               }}
             />
-
-            {/* Outer ring — fades with orbit */}
+            {/* Outer ring */}
             <div
               className="planet-ring"
               style={{
@@ -105,8 +96,7 @@ export default function Hero() {
                 border: "1px solid rgb(250,204,21)",
               }}
             />
-
-            {/* Inner black core — orbits, black fill stays solid */}
+            {/* Inner black core */}
             <div
               className="planet-core"
               style={{
@@ -121,7 +111,6 @@ export default function Hero() {
                 justifyContent: "center",
               }}
             >
-              {/* Black fill — never fades */}
               <div
                 style={{
                   position: "absolute",
@@ -132,7 +121,6 @@ export default function Hero() {
                   flexShrink: 0,
                 }}
               />
-              {/* Border only — fades independently */}
               <div
                 className="inner-border-fade"
                 style={{
