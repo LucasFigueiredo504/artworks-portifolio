@@ -17,28 +17,32 @@ export const imageFiles: ImageFile[] = [
   {
     slug: "coronation-of-the-ruler-of-darkness",
     title: "Coronation of the ruler of darkness",
-    description: "",
+    description:
+      "An immensely powerful archer wilding the powers of light, capable of erasing darkness from her path",
     image: coronation,
     category: "Original character",
   },
   {
     slug: "ulquiorra-segunda-etapa",
     title: "Ulquiorra Segunda Etapa",
-    description: "",
+    description:
+      "An immensely powerful archer wilding the powers of light, capable of erasing darkness from her path",
     image: ulquiorra,
     category: "Fanart",
   },
   {
     slug: "taliaria-horror-of-the-sharp-waves",
     title: "Taliaria, Horror of the Sharp Waves",
-    description: "",
+    description:
+      "An immensely powerful archer wilding the powers of light, capable of erasing darkness from her path",
     image: taliaria,
     category: "Original character",
   },
   {
     slug: "tellarrebels-fusion-artwem",
     title: "TellarRebels Fusion Artwem",
-    description: "",
+    description:
+      "An immensely powerful archer wilding the powers of light, capable of erasing darkness from her path",
     image: artwen,
     category: "Original character",
   },

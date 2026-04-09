@@ -6,18 +6,19 @@ export interface Post {
   body: any[];
 }
 
+export type Section = {
+  type: "text-image" | "text";
+  text: string;
+  image: ImageFile;
+  alignment: "left" | "right";
+};
 export type Story = {
   slug: string;
   title: string;
   description: string;
   banner: string;
   last_updated_at: string;
-  sections: {
-    type: "text-image" | "text";
-    text: string;
-    image: ImageFile;
-    alignment: "left" | "right";
-  }[];
+  sections: Section[];
 };
 export type ImageFile = {
   title: string;

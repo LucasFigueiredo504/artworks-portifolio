@@ -1,5 +1,5 @@
 import Hero from "./components/Hero";
-import LatestWorks from "./components/LatestWroks";
+import LatestWorks from "./components/LatestWorks";
 import Stories from "./components/Stories";
 import Gallery from "./components/Gallery";
 import Contact from "./components/Contact";

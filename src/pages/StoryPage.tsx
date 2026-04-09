@@ -1,6 +1,9 @@
-import { useParams, Link } from "react-router-dom";
+import { useRef } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { motion, useInView } from "motion/react";
 import frame from "../assets/frame.svg";
 import { stories } from "../lib/stories";
+import type { Section } from "../types/types";
 
 export function StoryPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -35,19 +38,26 @@ export function StoryPage() {
       {/* Hero Banner */}
       <div className="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
         {bannerImg && (
-          <img
+          <motion.img
             src={bannerImg}
             alt={story.title}
             className="absolute inset-0 w-full h-full object-cover"
+            initial={{ scale: 1.08 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           />
         )}
-        {/* Dark overlay for text legibility */}
         <div className="absolute inset-0 bg-black/40" />
 
         {/* Hero text */}
         <div className="absolute inset-0 z-20 flex flex-col justify-end px-8 md:px-20 pb-16">
           <div className="max-w-3xl">
-            <div className="flex items-center gap-4 mb-5">
+            <motion.div
+              className="flex items-center gap-4 mb-5"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            >
               <span className="text-white/60 text-xs font-body tracking-widest uppercase">
                 Last Updated
               </span>
@@ -55,13 +65,23 @@ export function StoryPage() {
               <span className="text-white/60 text-xs font-body">
                 {updatedDate}
               </span>
-            </div>
-            <h1 className="font-display text-white text-5xl md:text-7xl leading-none mb-6">
+            </motion.div>
+            <motion.h1
+              className="font-display text-white text-5xl md:text-7xl leading-none mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+            >
               {story.title}
-            </h1>
-            <p className="text-white/70 font-body text-base md:text-lg leading-relaxed max-w-xl">
+            </motion.h1>
+            <motion.p
+              className="text-white/70 font-body text-base md:text-lg leading-relaxed max-w-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.55 }}
+            >
               {story.description}
-            </p>
+            </motion.p>
           </div>
         </div>
       </div>
@@ -70,59 +90,100 @@ export function StoryPage() {
       <div className="max-w-7xl mx-auto px-8 py-24 flex flex-col gap-28">
         {story.sections.map((section, i) => {
           if (section.type === "text") {
-            return (
-              <div key={i} className="max-w-2xl mx-auto text-center">
-                <p className="text-gray-600 font-body text-base leading-loose">
-                  {section.text}
-                </p>
-              </div>
-            );
+            return <TextSection key={i} text={section.text} />;
           }
 
-          // text-image section
-          // alignment "left"  → image left, text right  → md:flex-row (image is first in JSX)
-          // alignment "right" → image right, text left  → md:flex-row-reverse (image is first in JSX)
           const isLeft = section.alignment === "left";
-
-          return (
-            <div
-              key={i}
-              className={`flex flex-col ${
-                isLeft ? "md:flex-row" : "md:flex-row-reverse"
-              } gap-12 md:gap-20 items-center`}
-            >
-              {/* Image */}
-              {section.image?.image && (
-                <div className="relative w-full md:w-1/2 aspect-[4/3] group overflow-hidden flex-shrink-0">
-                  <img
-                    src={section.image.image}
-                    alt={section.image.title || section.image.description || ""}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <img
-                    src={frame}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
-                  />
-                </div>
-              )}
-
-              {/* Text */}
-              <div className="w-full md:w-1/2 flex flex-col justify-center">
-                <p className="text-gray-600 font-body text-2xl leading-loose">
-                  {section.text}
-                </p>
-                {section.image?.description && (
-                  <p className="mt-6 text-gray-400 text-xs font-body italic">
-                    {section.image.description}
-                  </p>
-                )}
-              </div>
-            </div>
-          );
+          return <TextImageSection key={i} section={section} isLeft={isLeft} />;
         })}
       </div>
     </article>
+  );
+}
+
+function TextSection({ text }: { text: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="max-w-2xl mx-auto text-center"
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
+      <p className="text-gray-600 font-body text-base leading-loose">{text}</p>
+    </motion.div>
+  );
+}
+
+function TextImageSection({
+  section,
+  isLeft,
+}: {
+  section: Section;
+  isLeft: boolean;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const navigate = useNavigate();
+
+  return (
+    <motion.div
+      ref={ref}
+      className={`flex flex-col ${isLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-12 md:gap-20 items-center`}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      {/* Image */}
+      {section.image?.image && (
+        <motion.div
+          className="relative w-full md:w-1/2 aspect-[4/3] group overflow-hidden flex-shrink-0 cursor-pointer"
+          initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
+          onClick={() =>
+            section.image?.slug && navigate(`/file/${section.image.slug}`)
+          }
+        >
+          <img
+            src={section.image.image}
+            alt={section.image.title || section.image.description || ""}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <img
+            src={frame}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none b-5 border-white"
+          />
+          {/* Hover overlay */}
+          <div className="absolute inset-0 z-5 bg-black/0 group-hover:bg-black/30 transition-colors duration-500 flex items-center justify-center">
+            <span className="font-display text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              {section.image.title}
+            </span>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Text */}
+      <motion.div
+        className="w-full md:w-1/2 flex flex-col justify-center"
+        initial={{ opacity: 0, x: isLeft ? 40 : -40 }}
+        animate={inView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.25 }}
+      >
+        <p className="text-gray-600 font-body text-2xl leading-loose">
+          {section.text}
+        </p>
+        {section.image?.description && (
+          <p className="mt-6 text-gray-400 text-xs font-body italic">
+            {section.image.description}
+          </p>
+        )}
+      </motion.div>
+    </motion.div>
   );
 }

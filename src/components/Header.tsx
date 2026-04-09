@@ -1,7 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { motion } from "motion/react";
 import divider from "../assets/divider.svg";
 import logo from "/logoPng.png";
+
+const navItems = [
+  { label: "Latest Works", href: "/#latest", type: "a" },
+  { label: "Stories", href: "/stories", type: "a" },
+  { label: "Gallery", href: "/gallery", type: "link" },
+  { label: "Contact", href: "/#contact", type: "a" },
+];
+
+const mobileNavItems = [
+  { label: "Works", href: "/#works", type: "a" },
+  { label: "Stories", href: "/#stories", type: "a" },
+  { label: "Gallery", href: "/gallery", type: "link" },
+  { label: "Contact", href: "/#contact", type: "a" },
+];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -12,18 +27,18 @@ export default function Header() {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
+  const isActive = (href: string) => {
+    const path = href.startsWith("/#") ? null : href.split("#")[0];
+    return path !== null && location.pathname === path;
+  };
+
   useEffect(() => {
     if (!isHome) return;
 
     const handleScroll = () => {
       const current = window.scrollY;
-
-      if (current < lastScrollY.current) {
-        setVisible(true);
-      } else if (current > 80) {
-        setVisible(false);
-      }
-
+      if (current < lastScrollY.current) setVisible(true);
+      else if (current > 80) setVisible(false);
       setAtTop(current < 80);
       lastScrollY.current = current;
     };
@@ -44,68 +59,81 @@ export default function Header() {
             : "translateY(0)",
         }}
       >
-        {/* Bar */}
         <div className="relative flex items-center justify-between px-8 pt-5 pb-2">
-          {/* Background (FIXED) */}
           <div
             className="absolute inset-0 bg-black transition-opacity duration-500 pointer-events-none"
-            style={{
-              opacity: isHome ? (atTop ? 0 : 1) : 1,
-            }}
+            style={{ opacity: isHome ? (atTop ? 0 : 1) : 1 }}
           />
 
           {/* Logo */}
-          <Link to="/" className="relative">
-            <img
-              src={logo}
-              alt="Tellar Heaven"
-              className="h-10 w-auto object-contain"
-            />
-          </Link>
-
-          {/* Nav */}
-          <nav className="relative hidden md:flex gap-10 text-xs tracking-[0.25em] uppercase text-white">
-            <a
-              href="/#latest"
-              className="hover:text-yellow-400 transition-colors duration-300"
-            >
-              Latest Works
-            </a>
-
-            <a
-              href="/stories"
-              className="hover:text-yellow-400 transition-colors duration-300"
-            >
-              Stories
-            </a>
-
-            <Link
-              to="/gallery"
-              className="hover:text-yellow-400 transition-colors duration-300"
-            >
-              Gallery
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <Link to="/" className="relative">
+              <img
+                src={logo}
+                alt="Tellar Heaven"
+                className="h-10 w-auto object-contain"
+              />
             </Link>
+          </motion.div>
 
-            <a
-              href="/#contact"
-              className="hover:text-yellow-400 transition-colors duration-300"
-            >
-              Contact
-            </a>
+          {/* Desktop Nav */}
+          <nav className="relative hidden md:flex gap-10 text-xs tracking-[0.25em] uppercase text-white">
+            {navItems.map((item, i) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut",
+                  delay: 0.1 + i * 0.08,
+                }}
+                className="relative pb-1"
+              >
+                {item.type === "link" ? (
+                  <Link
+                    to={item.href}
+                    className="hover:text-yellow-400 transition-colors duration-300"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    href={item.href}
+                    className="hover:text-yellow-400 transition-colors duration-300"
+                  >
+                    {item.label}
+                  </a>
+                )}
+                {isActive(item.href) && (
+                  <motion.span
+                    layoutId="underline"
+                    className="absolute bottom-0 left-0 right-0 h-px bg-yellow-400"
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  />
+                )}
+              </motion.div>
+            ))}
           </nav>
 
           {/* Mobile button */}
-          <button
+          <motion.button
             className="relative md:hidden flex flex-col gap-1.5 cursor-pointer"
             onClick={() => setOpen(!open)}
             aria-label="Menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
           >
             <span className="block w-6 h-px bg-white" />
             <span className="block w-4 h-px bg-white" />
-          </button>
+          </motion.button>
         </div>
 
-        {/* Divider */}
         <div
           className="w-full transition-opacity duration-500 pointer-events-none"
           style={{
@@ -131,37 +159,36 @@ export default function Header() {
             ×
           </button>
 
-          <a
-            href="/#works"
-            onClick={() => setOpen(false)}
-            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
-          >
-            Works
-          </a>
-
-          <a
-            href="/#stories"
-            onClick={() => setOpen(false)}
-            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
-          >
-            Stories
-          </a>
-
-          <Link
-            to="/gallery"
-            onClick={() => setOpen(false)}
-            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
-          >
-            Gallery
-          </Link>
-
-          <a
-            href="/#contact"
-            onClick={() => setOpen(false)}
-            className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
-          >
-            Contact
-          </a>
+          {mobileNavItems.map((item, i) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.07 }}
+              className="relative"
+            >
+              {item.type === "link" ? (
+                <Link
+                  to={item.href}
+                  onClick={() => setOpen(false)}
+                  className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="font-display text-4xl text-white hover:text-yellow-400 transition-colors"
+                >
+                  {item.label}
+                </a>
+              )}
+              {isActive(item.href) && (
+                <span className="absolute -bottom-1 left-0 right-0 h-px bg-yellow-400" />
+              )}
+            </motion.div>
+          ))}
         </div>
       )}
     </>
