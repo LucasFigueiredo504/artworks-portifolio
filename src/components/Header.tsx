@@ -12,8 +12,8 @@ const navItems = [
 ];
 
 const mobileNavItems = [
-  { label: "Works", href: "/#works", type: "a" },
-  { label: "Stories", href: "/#stories", type: "a" },
+  { label: "Latest Works", href: "/#works", type: "a" },
+  { label: "Stories", href: "/stories", type: "a" },
   { label: "Gallery", href: "/gallery", type: "link" },
   { label: "Contact", href: "/#contact", type: "a" },
 ];

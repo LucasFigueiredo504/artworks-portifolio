@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { imageFiles } from "../lib/files";
 
 const works = imageFiles.slice(-5);
@@ -52,7 +52,7 @@ export default function LatestWorks() {
               {works.map((work, i) => (
                 <a
                   key={i}
-                  href={`/${work.slug}`}
+                  href={`/file/${work.slug}`}
                   className="flex-none w-[80vw] md:w-[40vw] lg:w-[28vw] group cursor-pointer"
                 >
                   <div className="relative aspect-square overflow-hidden mb-5">
@@ -71,16 +71,10 @@ export default function LatestWorks() {
                     </div>
                     <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="w-8 h-8 border border-yellow-400/60 flex items-center justify-center">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          stroke="rgb(250,204,21)"
-                          strokeWidth="1.5"
-                        >
-                          <path d="M2 1H1v1M10 1h1v1M2 11H1v-1M10 11h1v-1" />
-                        </svg>
+                        <ArrowUpRight
+                          className="text-yellow-400 font-light"
+                          size={20}
+                        />
                       </div>
                     </div>
                   </div>
