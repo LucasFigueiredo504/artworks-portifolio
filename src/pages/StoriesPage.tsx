@@ -40,7 +40,7 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
         <img
           src={img}
           alt={story.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-105"
         />
         <img
           src={frame}

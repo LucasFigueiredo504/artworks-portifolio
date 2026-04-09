@@ -4,6 +4,7 @@ import { Divider } from "./Divider";
 import dragon from "../assets/decorative_dragon_2.svg";
 import { imageFiles } from "../lib/files";
 import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Gallery() {
   const [mainIndex] = useState(() =>
@@ -11,7 +12,9 @@ export default function Gallery() {
   );
 
   const mainImage = imageFiles[mainIndex];
-  const smallImages = imageFiles.filter((_, i) => i !== mainIndex);
+
+  // ✅ limit to max 4 small images
+  const smallImages = imageFiles.filter((_, i) => i !== mainIndex).slice(0, 4);
 
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: "-80px" });
@@ -80,7 +83,7 @@ export default function Gallery() {
             <div className="grid grid-cols-2 gap-4">
               {smallImages.map((img, i) => (
                 <motion.div
-                  key={i}
+                  key={img.slug} // ✅ better key
                   initial={{ opacity: 0, y: 30 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{
@@ -121,7 +124,7 @@ export default function Gallery() {
               className="inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase font-body text-yellow-400 hover:text-white transition-colors duration-300"
             >
               Explore Full Gallery
-              <span className="inline-block w-8 h-px bg-current" />
+              <ArrowUpRight className="text-yellow-400" size={20} />
             </a>
           </motion.div>
         </div>

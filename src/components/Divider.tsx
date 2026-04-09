@@ -1,6 +1,12 @@
 import divider from "../assets/divider.svg";
 
-export const Divider = ({ flip = false }: { flip?: boolean }) => (
+export const Divider = ({
+  flip = false,
+  color = false,
+}: {
+  flip?: boolean;
+  color?: boolean;
+}) => (
   <div
     className="w-full"
     style={{
@@ -10,7 +16,7 @@ export const Divider = ({ flip = false }: { flip?: boolean }) => (
       backgroundRepeat: "repeat-x",
       backgroundSize: "auto 100%",
       backgroundPosition: "center",
-      filter: "brightness(0)",
+      filter: color ? undefined : "brightness(0)",
       transform: flip ? "scaleY(-1)" : undefined,
     }}
   />

@@ -4,6 +4,7 @@ import { motion, useInView } from "motion/react";
 import frame from "../assets/frame.svg";
 import { stories } from "../lib/stories";
 import type { Section } from "../types/types";
+import { Divider } from "../components/Divider";
 
 export function StoryPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -41,13 +42,16 @@ export function StoryPage() {
           <motion.img
             src={bannerImg}
             alt={story.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-[center_10%]"
             initial={{ scale: 1.08 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
           />
         )}
         <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute -bottom-9  left-0 h-10 w-full">
+          <Divider flip color />
+        </div>
 
         {/* Hero text */}
         <div className="absolute inset-0 z-20 flex flex-col justify-end px-8 md:px-20 pb-16">
@@ -151,7 +155,7 @@ function TextImageSection({
           <img
             src={section.image.image}
             alt={section.image.title || section.image.description || ""}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-105"
           />
           <img
             src={frame}
