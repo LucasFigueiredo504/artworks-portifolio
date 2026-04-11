@@ -16,7 +16,10 @@ export default function Contact() {
     onSubmit: async ({ value }) => {
       const response = await fetch(`${API}/v1/submit`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": import.meta.env.VITE_API_KEY,
+        },
         body: JSON.stringify(value),
       });
 
