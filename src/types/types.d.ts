@@ -1,29 +1,25 @@
-export interface Post {
-  title: string;
-  date: string;
-  image?: { asset: { _ref: string } };
-  excerpt: string;
-  body: any[];
-}
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-export type Section = {
-  type: "text-image" | "text";
-  text: string;
-  image: ImageFile;
-  alignment: "left" | "right";
-};
-export type Story = {
-  slug: string;
-  title: string;
-  description: string;
-  banner: string;
-  last_updated_at: string;
-  sections: Section[];
-};
 export type ImageFile = {
   title: string;
   slug: string;
   description: string;
-  image: string;
-  category: "Original character" | "Fanart" | "Landscape";
+  image: SanityImageSource;
+  category: string; // resolved to title string via GROQ ->
+};
+
+export type Section = {
+  type: "text-image" | "text";
+  text: string;
+  image?: SanityImageSource;
+  alignment?: "left" | "right";
+};
+
+export type Story = {
+  slug: string;
+  title: string;
+  description: string;
+  banner: SanityImageSource;
+  last_updated_at: string;
+  sections: Section[];
 };

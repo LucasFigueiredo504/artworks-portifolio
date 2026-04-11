@@ -5,9 +5,9 @@ import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
   name: 'default',
-  title: 'makup-template',
+  title: 'tellarheaven-portfolio',
 
-  projectId: 'sw6n02a0',
+  projectId: 'yu81wy7g',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],

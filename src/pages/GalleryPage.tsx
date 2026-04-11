@@ -1,17 +1,28 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "motion/react";
-import { imageFiles } from "../lib/files";
-
-const categories = ["All", "Original character", "Fanart"];
+import { getImageFiles, urlFor } from "../lib/sanity";
+import type { ImageFile } from "../types/types";
 
 export function GalleryPage() {
+  const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
   const [activeCategory, setActiveCategory] = useState("All");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    getImageFiles().then((files) => {
+      setImageFiles(files);
+      // derive unique categories from the fetched data
+      const unique = Array.from(
+        new Set(files.map((f) => f.category).filter(Boolean)),
+      );
+      setCategories(["All", ...unique]);
+    });
+  }, []);
+
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
-
   const gridRef = useRef(null);
   const gridInView = useInView(gridRef, { once: true, margin: "-80px" });
 
@@ -24,7 +35,6 @@ export function GalleryPage() {
     <div className="bg-white">
       <section className="bg-white py-32">
         <div className="max-w-7xl mx-auto px-8">
-          {/* Header */}
           <motion.div
             ref={headerRef}
             className="text-center mb-20"
@@ -38,7 +48,6 @@ export function GalleryPage() {
             <div className="w-16 h-px bg-yellow-400 mx-auto mt-6" />
           </motion.div>
 
-          {/* Category filter */}
           <motion.div
             className="flex flex-wrap justify-center gap-2 mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -60,7 +69,6 @@ export function GalleryPage() {
             ))}
           </motion.div>
 
-          {/* Grid */}
           <div
             ref={gridRef}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -82,7 +90,7 @@ export function GalleryPage() {
                   onClick={() => navigate(`/file/${img.slug}`)}
                 >
                   <img
-                    src={img.image}
+                    src={urlFor(img.image).width(600).url()}
                     alt={img.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

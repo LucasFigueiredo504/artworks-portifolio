@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { imageFiles } from "../lib/files";
+import { getImageFiles, urlFor } from "../lib/sanity";
+import type { ImageFile } from "../types/types";
 
 function LightboxModal({
   image,
   onClose,
 }: {
-  image: { image: string; title: string; category: string };
+  image: ImageFile;
   onClose: () => void;
 }) {
   return (
@@ -27,7 +28,7 @@ function LightboxModal({
         onClick={(e) => e.stopPropagation()}
       >
         <img
-          src={image.image}
+          src={urlFor(image.image).width(1600).url()}
           alt={image.title}
           className="max-w-full max-h-[85vh] object-contain"
         />
@@ -40,11 +41,16 @@ export function FilePage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
+
+  useEffect(() => {
+    getImageFiles().then(setImageFiles);
+  }, []);
 
   const currentIndex = imageFiles.findIndex((img) => img.slug === slug);
-  const drawing = imageFiles[currentIndex];
+  const drawing = imageFiles[currentIndex] ?? null;
 
-  if (!drawing) {
+  if (imageFiles.length > 0 && !drawing) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -61,6 +67,8 @@ export function FilePage() {
       </div>
     );
   }
+
+  if (!drawing) return null; // loading
 
   const prevDrawing = currentIndex > 0 ? imageFiles[currentIndex - 1] : null;
   const nextDrawing =
@@ -104,7 +112,7 @@ export function FilePage() {
               onClick={() => setLightboxOpen(true)}
             >
               <img
-                src={drawing.image}
+                src={urlFor(drawing.image).width(900).url()}
                 alt={drawing.title}
                 className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
               />
@@ -135,11 +143,11 @@ export function FilePage() {
               {drawing.title}
             </h1>
             <div className="w-12 h-px bg-yellow-400 mb-8" />
-            {drawing.description ? (
+            {drawing.description && (
               <p className="font-body text-black/60 text-base leading-relaxed">
                 {drawing.description}
               </p>
-            ) : null}
+            )}
             <div className="mt-12 pt-8 border-t border-black/8">
               <div className="flex flex-wrap gap-2">
                 <span className="px-4 py-1.5 border border-black/15 text-black/40 font-body text-xs tracking-[0.2em] uppercase">

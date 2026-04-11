@@ -3,11 +3,14 @@ import { motion, useInView } from "motion/react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { imageFiles } from "../lib/files";
+import { urlFor } from "../lib/sanity";
+import type { ImageFile } from "../types/types";
 
-const works = imageFiles.slice(-5);
+interface Props {
+  works: ImageFile[];
+}
 
-export default function LatestWorks() {
+export default function LatestWorks({ works }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start", slidesToScroll: 1, dragFree: true },
     [
@@ -28,7 +31,6 @@ export default function LatestWorks() {
   return (
     <section id="latest" className="bg-white py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8" ref={sectionRef}>
-        {/* Header */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -41,7 +43,6 @@ export default function LatestWorks() {
           <div className="w-16 h-px bg-yellow-400 mx-auto mt-6" />
         </motion.div>
 
-        {/* Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -49,15 +50,15 @@ export default function LatestWorks() {
         >
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-4">
-              {works.map((work, i) => (
+              {works.map((work) => (
                 <a
-                  key={i}
+                  key={work.slug}
                   href={`/file/${work.slug}`}
                   className="flex-none w-[80vw] md:w-[40vw] lg:w-[28vw] group cursor-pointer"
                 >
                   <div className="relative aspect-square overflow-hidden mb-5">
                     <img
-                      src={work.image}
+                      src={urlFor(work.image).width(600).url()}
                       alt={work.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -84,7 +85,6 @@ export default function LatestWorks() {
           </div>
         </motion.div>
 
-        {/* Controls */}
         <motion.div
           className="flex items-center justify-center gap-6 mt-12"
           initial={{ opacity: 0 }}

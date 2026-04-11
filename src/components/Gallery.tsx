@@ -1,23 +1,22 @@
-import { useState, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { useRef } from "react";
+import { motion } from "motion/react";
 import { Divider } from "./Divider";
 import dragon from "../assets/decorative_dragon_2.svg";
-import { imageFiles } from "../lib/files";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
+import { urlFor } from "../lib/sanity";
+import type { ImageFile } from "../types/types";
 
-export default function Gallery() {
-  const [mainIndex] = useState(() =>
-    Math.floor(Math.random() * imageFiles.length),
-  );
+interface Props {
+  imageFiles: ImageFile[];
+}
 
-  const mainImage = imageFiles[mainIndex];
-
-  // ✅ limit to max 4 small images
-  const smallImages = imageFiles.filter((_, i) => i !== mainIndex).slice(0, 4);
-
+export default function Gallery({ imageFiles }: Props) {
+  const mainImage = imageFiles[0];
+  const smallImages = imageFiles.slice(1, 5);
   const sectionRef = useRef(null);
-  const inView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  if (imageFiles.length === 0) return null;
 
   return (
     <div className="relative bg-white z-10">
@@ -37,11 +36,10 @@ export default function Gallery() {
 
       <section id="gallery" className="bg-black py-24" ref={sectionRef}>
         <div className="max-w-7xl mx-auto px-8">
-          {/* Header */}
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <h2 className="font-display text-white text-5xl md:text-7xl leading-none">
@@ -50,12 +48,10 @@ export default function Gallery() {
             <div className="w-16 h-px bg-yellow-400 mx-auto mt-6" />
           </motion.div>
 
-          {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Big main image */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             >
               <Link
@@ -64,7 +60,7 @@ export default function Gallery() {
                 style={{ maxHeight: "600px" }}
               >
                 <img
-                  src={mainImage.image}
+                  src={urlFor(mainImage.image).width(900).url()}
                   alt={mainImage.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -79,13 +75,12 @@ export default function Gallery() {
               </Link>
             </motion.div>
 
-            {/* Small images */}
             <div className="grid grid-cols-2 gap-4">
               {smallImages.map((img, i) => (
                 <motion.div
-                  key={img.slug} // ✅ better key
+                  key={img.slug}
                   initial={{ opacity: 0, y: 30 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{
                     duration: 0.6,
                     ease: "easeOut",
@@ -97,7 +92,7 @@ export default function Gallery() {
                     className="relative overflow-hidden group cursor-pointer aspect-square block"
                   >
                     <img
-                      src={img.image}
+                      src={urlFor(img.image).width(400).url()}
                       alt={img.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -112,15 +107,14 @@ export default function Gallery() {
             </div>
           </div>
 
-          {/* Bottom link */}
           <motion.div
             className="text-center mt-12"
             initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
           >
             <a
-              href="#"
+              href="/gallery"
               className="inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase font-body text-yellow-400 hover:text-white transition-colors duration-300"
             >
               Explore Full Gallery

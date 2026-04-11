@@ -1,5 +1,5 @@
 {
-  "name": "makup-template",
+  "name": "tellarheaven-portfolio",
   "private": true,
   "version": "1.0.0",
   "main": "package.json",
@@ -15,10 +15,10 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/vision": "^5.17.1",
+    "@sanity/vision": "^5.20.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "sanity": "^5.17.1",
+    "sanity": "^5.20.0",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {
