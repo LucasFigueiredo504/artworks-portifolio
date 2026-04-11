@@ -18,36 +18,31 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative ">
+    <div className="relative">
       <style>{`
-        @keyframes orbit-wait {
-          0%   { transform: translateX(-50%) translateY(-50%) translateZ(300px); }
-          100% { transform: translateX(-50%) translateY(-50%) translateZ(300px); }
-        }
         @keyframes orbit-md {
-          0%   { transform: translateX(-50%) translateY(-50%) rotateY(0deg)   translateZ(300px) rotateY(0deg); }
-          100% { transform: translateX(-50%) translateY(-50%) rotateY(360deg) translateZ(300px) rotateY(-360deg); }
+          0%    { transform: translateX(-50%) translateY(-50%) rotateY(0deg)   translateZ(300px) rotateY(0deg); }
+          3.08% { transform: translateX(-50%) translateY(-50%) rotateY(0deg)   translateZ(300px) rotateY(0deg); }
+          100%  { transform: translateX(-50%) translateY(-50%) rotateY(360deg) translateZ(300px) rotateY(-360deg); }
         }
         @keyframes orbit-fade {
-          0%   { opacity: 1; }
-          25%  { opacity: 0.4; }
-          50%  { opacity: 0.0; }
-          75%  { opacity: 0.4; }
-          100% { opacity: 1; }
+          0%    { opacity: 1; }
+          3.08% { opacity: 1; }
+          27%   { opacity: 0.4; }
+          53%   { opacity: 0.0; }
+          78%   { opacity: 0.4; }
+          100%  { opacity: 1; }
         }
         .planet-ring {
           animation:
-            orbit-wait 2s linear 1,
-            orbit-md   60s linear infinite 2s,
-            orbit-fade 60s linear infinite 2s;
+            orbit-md   65s linear infinite,
+            orbit-fade 65s linear infinite;
         }
         .planet-core {
-          animation:
-            orbit-wait 2s linear 1,
-            orbit-md   60s linear infinite 2s;
+          animation: orbit-md 65s linear infinite;
         }
         .inner-border-fade {
-          animation: orbit-fade 60s linear infinite 2s;
+          animation: orbit-fade 65s linear infinite;
         }
         .orbit-scene { perspective: 600px; }
         .orbit-stage {
@@ -57,7 +52,6 @@ export default function Hero() {
           width: 0; height: 0;
         }
       `}</style>
-      {/* StarField is now a sibling of section, both inside relative wrapper */}
       <StarField />
       <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
         <div
@@ -65,7 +59,6 @@ export default function Hero() {
           style={{ width: "100%", height: "100%", top: 0, left: 0 }}
         >
           <div className="orbit-stage">
-            {/* Star */}
             <div
               style={{
                 position: "absolute",
@@ -83,7 +76,6 @@ export default function Hero() {
                 `,
               }}
             />
-            {/* Outer ring */}
             <div
               className="planet-ring"
               style={{
@@ -96,7 +88,6 @@ export default function Hero() {
                 border: "1px solid rgb(250,204,21)",
               }}
             />
-            {/* Inner black core */}
             <div
               className="planet-core"
               style={{
@@ -136,7 +127,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* UI */}
         <p
           className="text-yellow-400 tracking-[0.5em] uppercase text-xs mb-8 opacity-80 font-body"
           style={{ position: "relative", zIndex: 2 }}

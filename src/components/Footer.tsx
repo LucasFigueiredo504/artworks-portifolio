@@ -131,8 +131,18 @@ export default function Footer() {
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
           >
-            <p className="text-white/20 text-xs font-body tracking-[0.2em] mx-auto">
+            <p className="text-white/20 text-xs font-body tracking-[0.2em] ">
               © {new Date().getFullYear()} TELLARHEAVEN. All rights reserved.
+            </p>
+            <p className="text-white/20 text-xs font-body tracking-[0.2em] ">
+              Developed by{" "}
+              <a
+                href="https://next-frontend-portifolio.vercel.app/"
+                target="blank"
+                className="underline hover:text-yellow-400 transition-colors duration-300"
+              >
+                Lucas Figueredo
+              </a>
             </p>
           </motion.div>
         </div>

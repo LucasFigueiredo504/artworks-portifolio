@@ -2,12 +2,15 @@ import { useCallback, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { imageFiles } from "../lib/files";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { urlFor } from "../lib/sanity";
+import type { ImageFile } from "../types/types";
 
-const works = imageFiles.slice(-5);
+interface Props {
+  works: ImageFile[];
+}
 
-export default function LatestWorks() {
+export default function LatestWorks({ works }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start", slidesToScroll: 1, dragFree: true },
     [
@@ -28,7 +31,6 @@ export default function LatestWorks() {
   return (
     <section id="latest" className="bg-white py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8" ref={sectionRef}>
-        {/* Header */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -41,7 +43,6 @@ export default function LatestWorks() {
           <div className="w-16 h-px bg-yellow-400 mx-auto mt-6" />
         </motion.div>
 
-        {/* Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -49,15 +50,15 @@ export default function LatestWorks() {
         >
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-4">
-              {works.map((work, i) => (
+              {works.map((work) => (
                 <a
-                  key={i}
-                  href={`/${work.slug}`}
+                  key={work.slug}
+                  href={`/file/${work.slug}`}
                   className="flex-none w-[80vw] md:w-[40vw] lg:w-[28vw] group cursor-pointer"
                 >
                   <div className="relative aspect-square overflow-hidden mb-5">
                     <img
-                      src={work.image}
+                      src={urlFor(work.image).width(600).url()}
                       alt={work.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -71,16 +72,10 @@ export default function LatestWorks() {
                     </div>
                     <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="w-8 h-8 border border-yellow-400/60 flex items-center justify-center">
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          stroke="rgb(250,204,21)"
-                          strokeWidth="1.5"
-                        >
-                          <path d="M2 1H1v1M10 1h1v1M2 11H1v-1M10 11h1v-1" />
-                        </svg>
+                        <ArrowUpRight
+                          className="text-yellow-400 font-light"
+                          size={20}
+                        />
                       </div>
                     </div>
                   </div>
@@ -90,7 +85,6 @@ export default function LatestWorks() {
           </div>
         </motion.div>
 
-        {/* Controls */}
         <motion.div
           className="flex items-center justify-center gap-6 mt-12"
           initial={{ opacity: 0 }}

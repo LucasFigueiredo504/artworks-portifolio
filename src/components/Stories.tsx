@@ -1,36 +1,36 @@
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "motion/react";
 import frame from "../assets/frame.svg";
-import { stories } from "../lib/stories";
-
-type Story = (typeof stories)[number];
+import { getStories, urlFor } from "../lib/sanity";
+import type { Story } from "../types/types";
 
 function StoryRow({ story, i }: { story: Story; i: number }) {
   const isEven = i % 2 === 0;
-  const slug = story.slug;
-  const img =
-    typeof story.banner === "string" && story.banner !== "image"
-      ? story.banner
-      : story.sections[0]?.image?.image;
   const updatedDate = new Date(story.last_updated_at).toLocaleDateString(
     "en-US",
-    { month: "long", year: "numeric" },
+    {
+      month: "long",
+      year: "numeric",
+    },
   );
 
   const rowRef = useRef(null);
   const rowInView = useInView(rowRef, { once: true, margin: "-80px" });
 
+  const bannerUrl = urlFor(story.banner).width(800).url();
+  const firstSectionImage = story.sections[0]?.image
+    ? urlFor(story.sections[0].image).width(800).url()
+    : undefined;
+  const img = bannerUrl ?? firstSectionImage;
+
   return (
     <motion.div
       ref={rowRef}
-      className={`flex flex-col ${
-        isEven ? "md:flex-row" : "md:flex-row-reverse"
-      } gap-12 md:gap-16 items-center`}
+      className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} gap-12 md:gap-16 items-center`}
       initial={{ opacity: 0, y: 50 }}
       animate={rowInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
     >
-      {/* Image */}
       <motion.div
         className="relative w-full md:w-1/2 aspect-[4/3] group overflow-hidden"
         initial={{ opacity: 0, x: isEven ? -40 : 40 }}
@@ -40,17 +40,16 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
         <img
           src={img}
           alt={story.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover object-[center_10%] transition-transform duration-700 group-hover:scale-105"
         />
         <img
           src={frame}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none b-10 border-white"
+          className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
         />
       </motion.div>
 
-      {/* Text */}
       <motion.div
         className="w-full md:w-1/2 flex flex-col justify-center"
         initial={{ opacity: 0, x: isEven ? 40 : -40 }}
@@ -69,8 +68,8 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
           {story.description}
         </p>
         <a
-          href={`/stories/${slug}`}
-          className="group/link inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase font-body text-black hover:text-yellow-500 transition-colors duration-300"
+          href={`/stories/${story.slug}`}
+          className="inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase font-body text-black hover:text-yellow-500 transition-colors duration-300"
         >
           Read Story
         </a>
@@ -80,6 +79,12 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
 }
 
 export default function Stories() {
+  const [stories, setStories] = useState<Story[]>([]);
+
+  useEffect(() => {
+    getStories().then(setStories);
+  }, []);
+
   const displayed = stories.slice(0, 2);
 
   const headerRef = useRef(null);
@@ -88,7 +93,6 @@ export default function Stories() {
   return (
     <section id="stories" className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-8">
-        {/* Header */}
         <motion.div
           ref={headerRef}
           className="text-center mb-20"
@@ -102,14 +106,12 @@ export default function Stories() {
           <div className="w-16 h-px bg-white mx-auto mt-6" />
         </motion.div>
 
-        {/* Story rows */}
         <div className="flex flex-col gap-24">
           {displayed.map((story, i) => (
             <StoryRow key={story.slug} story={story} i={i} />
           ))}
         </div>
 
-        {/* See all */}
         <motion.div
           className="text-center mt-20"
           initial={{ opacity: 0, y: 20 }}
