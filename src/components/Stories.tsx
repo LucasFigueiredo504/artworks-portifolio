@@ -69,7 +69,7 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
         </p>
         <a
           href={`/stories/${story.slug}`}
-          className="inline-flex items-center gap-3 text-xs tracking-[0.3em] uppercase font-body text-black hover:text-yellow-500 transition-colors duration-300"
+          className="inline-flex items-center gap-3 text-xs z-10 tracking-[0.3em] uppercase bg-black font-body text-white hover:bg-yellow-500 transition-colors duration-300 px-6 py-3 self-start"
         >
           Read Story
         </a>
@@ -121,7 +121,7 @@ export default function Stories() {
         >
           <a
             href="/stories"
-            className="inline-block border border-black text-black px-12 py-4 text-xs tracking-[0.3em] uppercase font-body hover:bg-black hover:text-white transition-colors duration-400"
+            className="inline-block border border-black z-10 text-black px-12 py-4 text-xs tracking-[0.3em] uppercase font-body hover:bg-black hover:text-white transition-colors duration-400"
           >
             See All Stories
           </a>
