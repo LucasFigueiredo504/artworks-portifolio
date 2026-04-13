@@ -94,7 +94,7 @@ export default function Gallery({ imageFiles }: Props) {
                     <img
                       src={urlFor(img.image).width(400).url()}
                       alt={img.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 object-[center_10%]"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-500 flex items-center justify-center">
                       <span className="text-white font-display text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">
