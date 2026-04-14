@@ -23,3 +23,12 @@ export type Story = {
   last_updated_at: string;
   sections: Section[];
 };
+
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
+export {};
