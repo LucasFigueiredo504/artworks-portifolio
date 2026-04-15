@@ -30,7 +30,9 @@ export async function getImageFiles(): Promise<ImageFile[]> {
       title,
       "slug": slug.current,
       description,
-      image,
+      image {
+        asset->
+      },
       "category": category->title
     }
   `);
@@ -42,7 +44,9 @@ export async function getImageFileBySlug(slug: string): Promise<ImageFile> {
       title,
       "slug": slug.current,
       description,
-      image,
+      image {
+        asset->
+      },
       "category": category->title
     }`,
     { slug },
@@ -55,7 +59,9 @@ export async function getLatestImageFiles(): Promise<ImageFile[]> {
       title,
       "slug": slug.current,
       description,
-      image,
+      image {
+        asset->
+      },
       "category": category->title
     }
   `);
@@ -67,7 +73,9 @@ export async function getRandomImageFiles(): Promise<ImageFile[]> {
       title,
       "slug": slug.current,
       description,
-      image,
+      image {
+        asset->
+      },
       "category": category->title
     }
   `);
@@ -77,7 +85,7 @@ export async function getRandomImageFiles(): Promise<ImageFile[]> {
 
 //
 // ========================
-// STORY QUERIES (UPDATED)
+// STORY QUERIES (FIXED)
 // ========================
 //
 
@@ -88,17 +96,17 @@ export async function getStories(): Promise<Story[]> {
       "slug": slug.current,
       description,
 
-      // ✅ banner is now reference → dereference it
       banner->{
         title,
         "slug": slug.current,
         description,
-        image
+        image {
+          asset->
+        }
       },
 
       last_updated_at,
 
-      // ✅ section image is now reference → dereference it
       sections[] {
         type,
         text,
@@ -107,7 +115,9 @@ export async function getStories(): Promise<Story[]> {
           title,
           "slug": slug.current,
           description,
-          image
+          image {
+            asset->
+          }
         }
       }
     }
@@ -121,17 +131,17 @@ export async function getStoryBySlug(slug: string): Promise<Story> {
       "slug": slug.current,
       description,
 
-      // ✅ banner dereferenced
       banner->{
         title,
         "slug": slug.current,
         description,
-        image
+        image {
+          asset->
+        }
       },
 
       last_updated_at,
 
-      // ✅ sections dereferenced
       sections[] {
         type,
         text,
@@ -140,7 +150,9 @@ export async function getStoryBySlug(slug: string): Promise<Story> {
           title,
           "slug": slug.current,
           description,
-          image
+          image {
+            asset->
+          }
         }
       }
     }`,

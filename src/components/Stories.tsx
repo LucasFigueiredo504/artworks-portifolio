@@ -18,17 +18,16 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
   const rowRef = useRef(null);
   const rowInView = useInView(rowRef, { once: true, margin: "-80px" });
 
-  // ✅ FIXED: banner is now reference -> use .image
   const bannerUrl = story.banner?.image
     ? urlFor(story.banner.image).width(800).url()
     : undefined;
 
-  // ✅ FIXED: section image is now reference -> use .image.image
+  // ✅ FIXED: was story.sections[0].image — missing .image at the end
   const firstSectionImage = story.sections?.[0]?.image?.image
     ? urlFor(story.sections[0].image.image).width(800).url()
     : undefined;
 
-  const img = bannerUrl ?? firstSectionImage;
+  const img = bannerUrl ?? firstSectionImage ?? "";
 
   return (
     <motion.div
