@@ -18,6 +18,12 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
+//
+// ========================
+// IMAGE FILE QUERIES
+// ========================
+//
+
 export async function getImageFiles(): Promise<ImageFile[]> {
   return client.fetch(`
     *[_type == "imageFile"] | order(_createdAt desc) {
@@ -43,43 +49,6 @@ export async function getImageFileBySlug(slug: string): Promise<ImageFile> {
   );
 }
 
-export async function getStories(): Promise<Story[]> {
-  return client.fetch(`
-    *[_type == "story"] | order(last_updated_at desc) {
-      title,
-      "slug": slug.current,
-      description,
-      banner,
-      last_updated_at,
-      sections[] {
-        type,
-        text,
-        image,
-        alignment
-      }
-    }
-  `);
-}
-
-export async function getStoryBySlug(slug: string): Promise<Story> {
-  return client.fetch(
-    `*[_type == "story" && slug.current == $slug][0] {
-      title,
-      "slug": slug.current,
-      description,
-      banner,
-      last_updated_at,
-      sections[] {
-        type,
-        text,
-        image,
-        alignment
-      }
-    }`,
-    { slug },
-  );
-}
-// Last 5 images (already ordered by createdAt desc, just limit)
 export async function getLatestImageFiles(): Promise<ImageFile[]> {
   return client.fetch(`
     *[_type == "imageFile"] | order(_createdAt desc) [0..4] {
@@ -102,5 +71,79 @@ export async function getRandomImageFiles(): Promise<ImageFile[]> {
       "category": category->title
     }
   `);
+
   return files.sort(() => Math.random() - 0.5).slice(0, 5);
+}
+
+//
+// ========================
+// STORY QUERIES (UPDATED)
+// ========================
+//
+
+export async function getStories(): Promise<Story[]> {
+  return client.fetch(`
+    *[_type == "story"] | order(last_updated_at desc) {
+      title,
+      "slug": slug.current,
+      description,
+
+      // ✅ banner is now reference → dereference it
+      banner->{
+        title,
+        "slug": slug.current,
+        description,
+        image
+      },
+
+      last_updated_at,
+
+      // ✅ section image is now reference → dereference it
+      sections[] {
+        type,
+        text,
+        alignment,
+        image->{
+          title,
+          "slug": slug.current,
+          description,
+          image
+        }
+      }
+    }
+  `);
+}
+
+export async function getStoryBySlug(slug: string): Promise<Story> {
+  return client.fetch(
+    `*[_type == "story" && slug.current == $slug][0] {
+      title,
+      "slug": slug.current,
+      description,
+
+      // ✅ banner dereferenced
+      banner->{
+        title,
+        "slug": slug.current,
+        description,
+        image
+      },
+
+      last_updated_at,
+
+      // ✅ sections dereferenced
+      sections[] {
+        type,
+        text,
+        alignment,
+        image->{
+          title,
+          "slug": slug.current,
+          description,
+          image
+        }
+      }
+    }`,
+    { slug },
+  );
 }

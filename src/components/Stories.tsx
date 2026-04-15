@@ -6,6 +6,7 @@ import type { Story } from "../types/types";
 
 function StoryRow({ story, i }: { story: Story; i: number }) {
   const isEven = i % 2 === 0;
+
   const updatedDate = new Date(story.last_updated_at).toLocaleDateString(
     "en-US",
     {
@@ -17,16 +18,24 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
   const rowRef = useRef(null);
   const rowInView = useInView(rowRef, { once: true, margin: "-80px" });
 
-  const bannerUrl = urlFor(story.banner).width(800).url();
-  const firstSectionImage = story.sections[0]?.image
-    ? urlFor(story.sections[0].image).width(800).url()
+  // ✅ FIXED: banner is now reference -> use .image
+  const bannerUrl = story.banner?.image
+    ? urlFor(story.banner.image).width(800).url()
     : undefined;
+
+  // ✅ FIXED: section image is now reference -> use .image.image
+  const firstSectionImage = story.sections?.[0]?.image?.image
+    ? urlFor(story.sections[0].image.image).width(800).url()
+    : undefined;
+
   const img = bannerUrl ?? firstSectionImage;
 
   return (
     <motion.div
       ref={rowRef}
-      className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} gap-12 md:gap-16 items-center`}
+      className={`flex flex-col ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } gap-12 md:gap-16 items-center`}
       initial={{ opacity: 0, y: 50 }}
       animate={rowInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
@@ -42,6 +51,7 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
           alt={story.title}
           className="absolute inset-0 w-full h-full object-cover object-[center_10%] transition-transform duration-700 group-hover:scale-105"
         />
+
         <img
           src={frame}
           alt=""
@@ -61,12 +71,15 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
           <span className="w-8 h-px bg-gray-300" />
           <span className="text-gray-400 text-xs font-body">{updatedDate}</span>
         </div>
+
         <h3 className="font-display text-black text-3xl md:text-4xl leading-tight mb-6">
           {story.title}
         </h3>
+
         <p className="text-gray-500 leading-relaxed text-sm font-body mb-8">
           {story.description}
         </p>
+
         <a
           href={`/stories/${story.slug}`}
           className="inline-flex items-center gap-3 text-xs z-10 tracking-[0.3em] uppercase bg-black font-body text-white hover:bg-yellow-500 transition-colors duration-300 px-6 py-3 self-start"
