@@ -35,7 +35,6 @@ export function StoryPage() {
 
   if (!story) return null;
 
-  // ✅ story.banner is the resolved imageFile doc → .image is the raw Sanity image
   const bannerUrl = story.banner?.image
     ? urlFor(story.banner.image).width(1400).url()
     : "";
@@ -166,7 +165,7 @@ function TextImageSection({
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
         >
           {/* ✅ FIXED: section.image is the resolved imageFile doc → .image is the raw Sanity image */}
-          <Link to={`/image/${section.image.slug}`}>
+          <Link to={`/file/${section.image.slug}`}>
             <img
               src={urlFor(section.image.image).width(800).url()}
               alt={section.text}
