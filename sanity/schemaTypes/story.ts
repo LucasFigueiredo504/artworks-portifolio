@@ -1,5 +1,9 @@
-// schemaTypes/story.ts
 import {defineType, defineField} from 'sanity'
+
+// Simple safe type for parent (fixes TS error)
+type SectionParent = {
+  type?: string
+}
 
 export default defineType({
   name: 'story',
@@ -10,8 +14,9 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
+
     defineField({
       name: 'slug',
       title: 'Slug',
@@ -19,22 +24,24 @@ export default defineType({
       options: {
         source: 'title',
       },
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
+
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
     }),
+
+    // ✅ BANNER (reference to imageFile)
     defineField({
       name: 'banner',
       title: 'Banner Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      validation: Rule => Rule.required(),
+      type: 'reference',
+      to: [{type: 'imageFile'}],
+      validation: (Rule) => Rule.required(),
     }),
+
     defineField({
       name: 'last_updated_at',
       title: 'Last Updated At',
@@ -42,7 +49,7 @@ export default defineType({
       initialValue: () => new Date().toISOString(),
     }),
 
-    // ✅ INLINE SECTIONS ARRAY
+    // ✅ SECTIONS
     defineField({
       name: 'sections',
       title: 'Sections',
@@ -62,21 +69,33 @@ export default defineType({
                   {title: 'Text + Image', value: 'text-image'},
                 ],
               },
-              validation: Rule => Rule.required(),
+              validation: (Rule) => Rule.required(),
             }),
+
             defineField({
               name: 'text',
               title: 'Text',
               type: 'text',
-              validation: Rule => Rule.required(),
+              validation: (Rule) => Rule.required(),
             }),
+
+            // ✅ IMAGE REFERENCE (fixed TS)
             defineField({
               name: 'image',
-              title: 'Image',
-              type: 'image',
-              options: {hotspot: true},
-              hidden: ({parent}) => parent?.type === 'text',
+              title: 'Image File',
+              type: 'reference',
+              to: [{type: 'imageFile'}],
+              hidden: ({parent}) => (parent as SectionParent)?.type === 'text',
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  if ((context.parent as SectionParent)?.type === 'text-image' && !value) {
+                    return 'Image is required for text-image sections'
+                  }
+                  return true
+                }),
             }),
+
+            // ✅ ALIGNMENT (fixed TS)
             defineField({
               name: 'alignment',
               title: 'Image Alignment',
@@ -87,7 +106,7 @@ export default defineType({
                   {title: 'Right', value: 'right'},
                 ],
               },
-              hidden: ({parent}) => parent?.type === 'text',
+              hidden: ({parent}) => (parent as SectionParent)?.type === 'text',
             }),
           ],
         },

@@ -147,7 +147,9 @@ function TextImageSection({
   return (
     <motion.div
       ref={ref}
-      className={`flex flex-col ${isLeft ? "md:flex-row" : "md:flex-row-reverse"} gap-12 md:gap-20 items-center`}
+      className={`flex flex-col ${
+        isLeft ? "md:flex-row" : "md:flex-row-reverse"
+      } gap-12 md:gap-20 items-center`}
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -159,11 +161,15 @@ function TextImageSection({
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
         >
-          <img
-            src={urlFor(section.image).width(800).url()}
-            alt={section.text}
-            className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-105"
-          />
+          {/* ✅ LINK ADDED HERE */}
+          <Link to={`/image/${section.image.slug}`}>
+            <img
+              src={urlFor(section.image.image).width(800).url()}
+              alt={section.text}
+              className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-105"
+            />
+          </Link>
+
           <img
             src={frame}
             alt=""
