@@ -33,9 +33,13 @@ export function StoryPage() {
     );
   }
 
-  if (!story) return null; // loading
+  if (!story) return null;
 
-  const bannerUrl = urlFor(story.banner).width(1400).url();
+  // ✅ story.banner is the resolved imageFile doc → .image is the raw Sanity image
+  const bannerUrl = story.banner?.image
+    ? urlFor(story.banner.image).width(1400).url()
+    : "";
+
   const updatedDate = new Date(story.last_updated_at).toLocaleDateString(
     "en-US",
     {
@@ -161,7 +165,7 @@ function TextImageSection({
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
         >
-          {/* ✅ LINK ADDED HERE */}
+          {/* ✅ FIXED: section.image is the resolved imageFile doc → .image is the raw Sanity image */}
           <Link to={`/image/${section.image.slug}`}>
             <img
               src={urlFor(section.image.image).width(800).url()}
