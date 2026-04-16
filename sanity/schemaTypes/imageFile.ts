@@ -10,7 +10,7 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
@@ -20,12 +20,18 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
+    }),
+    defineField({
+      name: 'dontDisplayInLatest',
+      title: 'Hide from Latest Works',
+      type: 'boolean',
+      initialValue: false,
     }),
     defineField({
       name: 'image',
@@ -34,14 +40,14 @@ export default defineType({
       options: {
         hotspot: true,
       },
-      validation: Rule => Rule.required(),
+      validation: (Rule) => Rule.required(),
     }),
-   defineField({
-    name: 'category',
-    title: 'Category',
-    type: 'reference',
-    to: [{type: 'category'}],
-    validation: Rule => Rule.required(),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{type: 'category'}],
+      validation: (Rule) => Rule.required(),
     }),
   ],
 })

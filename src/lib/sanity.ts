@@ -55,7 +55,8 @@ export async function getImageFileBySlug(slug: string): Promise<ImageFile> {
 
 export async function getLatestImageFiles(): Promise<ImageFile[]> {
   return client.fetch(`
-    *[_type == "imageFile"] | order(_createdAt desc) [0..4] {
+   *[_type == "imageFile" && (dontDisplayInLatest != true)]
+    | order(_createdAt desc) [0..4] {
       title,
       "slug": slug.current,
       description,
@@ -82,12 +83,6 @@ export async function getRandomImageFiles(): Promise<ImageFile[]> {
 
   return files.sort(() => Math.random() - 0.5).slice(0, 5);
 }
-
-//
-// ========================
-// STORY QUERIES (FIXED)
-// ========================
-//
 
 export async function getStories(): Promise<Story[]> {
   return client.fetch(`
