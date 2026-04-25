@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "motion/react";
-import frame from "../assets/frame.svg";
+import frame from "../assets/frame_black.svg";
 import { getStories, urlFor } from "../lib/sanity";
 import type { Story } from "../types/types";
 
@@ -39,23 +39,20 @@ function StoryRow({ story, i }: { story: Story; i: number }) {
       animate={rowInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
     >
-      <motion.div
-        className="relative w-full md:w-1/2 aspect-[4/3] group overflow-hidden"
-        initial={{ opacity: 0, x: isEven ? -40 : 40 }}
-        animate={rowInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-      >
-        <img
-          src={img}
-          alt={story.title}
-          className="absolute inset-0 w-full h-full object-cover object-[center_10%] transition-transform duration-700 group-hover:scale-105"
-        />
+      <motion.div className="relative w-full md:w-1/2 aspect-[4/3] group">
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src={img}
+            alt={story.title}
+            className="w-full h-full object-cover object-[center_10%] transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
 
         <img
           src={frame}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none scale-109 ml-[3.4px] mt-[2px]"
         />
       </motion.div>
 

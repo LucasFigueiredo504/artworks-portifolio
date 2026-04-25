@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useInView } from "motion/react";
-import frame from "../assets/frame.svg";
+import frame from "../assets/frame_black.svg";
 import { getStoryBySlug, urlFor } from "../lib/sanity";
 import type { Story, Section } from "../types/types";
 import { Divider } from "../components/Divider";
@@ -159,25 +159,28 @@ function TextImageSection({
     >
       {section.image && (
         <motion.div
-          className="relative w-full md:w-1/2 aspect-[4/3] group overflow-hidden flex-shrink-0"
+          className="relative w-full md:w-1/2 aspect-[4/3] group flex-shrink-0"
           initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
         >
-          {/* ✅ FIXED: section.image is the resolved imageFile doc → .image is the raw Sanity image */}
           <Link to={`/file/${section.image.slug}`}>
-            <img
-              src={urlFor(section.image.image).width(800).url()}
-              alt={section.text}
-              className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-105"
-            />
+            {/* ✅ CLIPPED IMAGE (like your first example) */}
+            <div className="absolute inset-0 overflow-hidden">
+              <img
+                src={urlFor(section.image.image).width(800).url()}
+                alt={section.text}
+                className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
           </Link>
 
+          {/* ✅ FRAME (scaled + free to bleed) */}
           <img
             src={frame}
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
+            className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none scale-110 ml-[3.4px] mt-[2px]"
           />
         </motion.div>
       )}
