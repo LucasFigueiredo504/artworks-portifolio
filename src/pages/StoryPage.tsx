@@ -132,7 +132,7 @@ function TextSection({ text }: { text: string }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
-      <p className="text-gray-600 font-body text-base leading-loose">{text}</p>
+      <p className="text-gray-600 font-body text-2xl leading-loose">{text}</p>
     </motion.div>
   );
 }
