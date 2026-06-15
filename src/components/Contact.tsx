@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { useForm } from "@tanstack/react-form";
-import { API } from "../lib/consts";
+import emailjs from "@emailjs/browser";
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 export default function Contact() {
   const sectionRef = useRef(null);
@@ -14,18 +18,16 @@ export default function Contact() {
       message: "",
     },
     onSubmit: async ({ value }) => {
-      const response = await fetch(`${API}/v1/submit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": import.meta.env.VITE_API_KEY,
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          name: value.name,
+          email: value.email,
+          message: value.message,
         },
-        body: JSON.stringify(value),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to send message");
-      }
+        { publicKey: EMAILJS_PUBLIC_KEY },
+      );
     },
   });
 
