@@ -91,6 +91,10 @@ export default function Footer() {
               <ul className="flex flex-col gap-3">
                 {[
                   {
+                    href: "https://vgen.co/Tellarheaven",
+                    label: "Vgen",
+                  },
+                  {
                     href: "https://www.instagram.com/tellarheaven/",
                     label: "Instagram",
                   },
