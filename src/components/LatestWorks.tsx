@@ -5,6 +5,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { urlFor } from "../lib/sanity";
 import type { ImageFile } from "../types/types";
+import AdBanner from "./AdBanner";
 
 interface Props {
   works: ImageFile[];
@@ -29,7 +30,7 @@ export default function LatestWorks({ works }: Props) {
   const inView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   return (
-    <section id="latest" className="bg-white py-24 overflow-hidden">
+    <section id="latest" className="bg-white pt-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8" ref={sectionRef}>
         <motion.div
           className="text-center mb-16"
@@ -107,6 +108,7 @@ export default function LatestWorks({ works }: Props) {
           </button>
         </motion.div>
       </div>
+      <AdBanner slot="7319788014" />
     </section>
   );
 }
