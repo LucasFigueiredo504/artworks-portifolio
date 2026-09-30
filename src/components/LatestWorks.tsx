@@ -5,7 +5,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { urlFor } from "../lib/sanity";
 import type { ImageFile } from "../types/types";
-import AdBanner from "./AdBanner";
+//import AdBanner from "./AdBanner";
 
 interface Props {
   works: ImageFile[];
@@ -108,7 +108,7 @@ export default function LatestWorks({ works }: Props) {
           </button>
         </motion.div>
       </div>
-     {/*  <AdBanner slot="7319788014" /> */}
+      {/*  <AdBanner slot="7319788014" /> */}
     </section>
   );
 }
