@@ -108,7 +108,7 @@ export default function LatestWorks({ works }: Props) {
           </button>
         </motion.div>
       </div>
-      <AdBanner slot="7319788014" />
+     {/*  <AdBanner slot="7319788014" /> */}
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -12,26 +12,137 @@ function LightboxModal({
   image: ImageFile;
   onClose: () => void;
 }) {
+  const [zoomed, setZoomed] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const drag = useRef({
+    active: false,
+    moved: false,
+    x: 0,
+    y: 0,
+    left: 0,
+    top: 0,
+  });
+
+  // Esc (zoom out first, then close) + lock page scroll
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (zoomed) setZoomed(false);
+      else onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [zoomed, onClose]);
+
+  // Drag-to-pan (mouse only; touch uses native scrolling)
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (!zoomed || e.pointerType !== "mouse" || !scrollRef.current) return;
+    drag.current = {
+      active: true,
+      moved: false,
+      x: e.clientX,
+      y: e.clientY,
+      left: scrollRef.current.scrollLeft,
+      top: scrollRef.current.scrollTop,
+    };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d.active || !scrollRef.current) return;
+    const dx = e.clientX - d.x;
+    const dy = e.clientY - d.y;
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) d.moved = true;
+    scrollRef.current.scrollLeft = d.left - dx;
+    scrollRef.current.scrollTop = d.top - dy;
+  };
+  const endDrag = () => {
+    drag.current.active = false;
+  };
+
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (drag.current.moved) {
+      drag.current.moved = false; // it was a pan, not a click
+      return;
+    }
+    setZoomed((z) => !z);
+  };
+
+  // Center the zoomed image once it has loaded
+  const centerScroll = () => {
+    const el = scrollRef.current;
+    if (!el || !zoomed) return;
+    el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+    el.scrollTop = (el.scrollHeight - el.clientHeight) / 2;
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+      className="fixed inset-0 z-50 overflow-hidden bg-black"
       onClick={onClose}
     >
+      {/* Blurred image background */}
+      <img
+        src={urlFor(image.image).width(200).url()}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl pointer-events-none select-none"
+      />
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+
       <button
-        className="absolute top-6 right-8 text-white/40 hover:text-yellow-400 transition-colors text-3xl font-light z-10"
-        onClick={onClose}
+        className="absolute top-6 right-8 text-white/60 hover:text-yellow-400 transition-colors text-3xl font-light z-20"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
       >
         ×
       </button>
+
+      {/* Scroll container (only scrolls when zoomed) */}
       <div
-        className="relative max-w-4xl max-h-[85vh] mx-16"
-        onClick={(e) => e.stopPropagation()}
+        ref={scrollRef}
+        className={`absolute inset-0 z-10 ${
+          zoomed ? "overflow-auto" : "overflow-hidden"
+        }`}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
       >
-        <img
-          src={urlFor(image.image).width(1600).url()}
-          alt={image.title}
-          className="max-w-full max-h-[85vh] object-contain"
-        />
+        <div
+          className={`flex min-h-full min-w-full ${
+            zoomed ? "" : "items-center justify-center"
+          }`}
+          onClick={zoomed ? (e) => e.stopPropagation() : onClose}
+        >
+          {zoomed ? (
+            <img
+              key="zoomed"
+              src={urlFor(image.image).width(2800).url()}
+              alt={image.title}
+              draggable={false}
+              onLoad={centerScroll}
+              onClick={handleImageClick}
+              className="m-auto max-w-none cursor-zoom-out select-none"
+            />
+          ) : (
+            <img
+              key="fit"
+              src={urlFor(image.image).width(1600).url()}
+              alt={image.title}
+              draggable={false}
+              onClick={handleImageClick}
+              className="max-w-[92vw] max-h-[88vh] object-contain cursor-zoom-in select-none"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
