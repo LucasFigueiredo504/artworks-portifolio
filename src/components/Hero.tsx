@@ -85,7 +85,7 @@ export default function Hero() {
               letterSpacing: "0",
             }}
           >
-            <span className="block">Tellar</span>
+            <span className="block text-[0.8em]">Tellar</span>
             <span className="block text-yellow-400">Heaven</span>
           </motion.h1>
           <motion.p
