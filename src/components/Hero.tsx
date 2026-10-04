@@ -43,10 +43,11 @@ export default function Hero() {
 
   return (
     <div className="relative">
-      <section className="relative h-screen min-h-[600px] bg-black overflow-hidden">
+      {/* max-md:h-svh keeps the hero inside mobile browser toolbars */}
+      <section className="relative h-screen max-md:h-svh min-h-[600px] max-md:min-h-[520px] bg-black overflow-hidden">
         <StarField />
 
-        {/* Images — full height, bleeding off the right edge */}
+        {/* Images — full height, bleeding off the right edge (full screen on mobile) */}
         <div className="absolute inset-y-0 right-0 w-full md:w-[72%]">
           <AnimatePresence initial={false}>
             <motion.div
@@ -69,12 +70,13 @@ export default function Hero() {
               />
             </motion.div>
           </AnimatePresence>
-          {/* fade into the dark on the left so the text stays readable */}
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black via-black/50 to-transparent max-md:bg-gradient-to-t max-md:from-black max-md:via-black/60 max-md:to-black/10" />
+          {/* fade into the dark on the left so the text stays readable
+              (mobile: only the bottom fades so the image stays fully visible) */}
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black via-black/50 to-transparent max-md:bg-gradient-to-t max-md:from-black max-md:via-black/40 max-md:via-[30%] max-md:to-transparent max-md:to-[65%]" />
         </div>
 
-        {/* Text — left (static) */}
-        <div className="relative z-10 h-full max-w-7xl mx-auto px-8 flex flex-col justify-center max-md:justify-end max-md:pb-28 pointer-events-none">
+        {/* Text — left (static); centered at the bottom on mobile */}
+        <div className="relative z-10 h-full max-w-7xl mx-auto px-8 flex flex-col justify-center max-md:justify-end max-md:items-center max-md:text-center max-md:px-6 max-md:pb-24 pointer-events-none">
           <motion.h1
             {...rise(0.1)}
             className="uppercase text-white leading-[1.05] select-none"
@@ -90,15 +92,15 @@ export default function Hero() {
           </motion.h1>
           <motion.p
             {...rise(0.3)}
-            className="font-body text-white/80 text-lg mt-6"
+            className="font-body text-white/80 text-lg mt-6 max-md:mt-4"
           >
             Digital Illustrator
           </motion.p>
         </div>
 
-        {/* Progress — one bar per image */}
-        <div className="absolute bottom-10 left-0 right-0 z-10">
-          <div className="max-w-7xl mx-auto px-8 flex gap-3">
+        {/* Progress — one bar per image (centered on mobile) */}
+        <div className="absolute bottom-10 max-md:bottom-6 left-0 right-0 z-10">
+          <div className="max-w-7xl mx-auto px-8 max-md:px-6 flex max-md:justify-center gap-3">
             {SLIDES.map((s, i) => (
               <button
                 key={s.src}
