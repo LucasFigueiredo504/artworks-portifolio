@@ -5,11 +5,11 @@ import { StarField } from "./StarsBg";
 
 // images live in /public/hero_images
 const SLIDES = [
-  { src: "/hero_images/Batman.jpg", title: "Batman" },
-  { src: "/hero_images/JellyTown4.jpg", title: "Jelly Town" },
-  { src: "/hero_images/Play_Chaos_MAX_v2.jpg", title: "Play Chaos" },
-  { src: "/hero_images/raptor.jpg", title: "Raptor" },
-  { src: "/hero_images/zuko_finished.jpg", title: "Zuko" },
+  { src: "/hero_images/1.jpg", title: "Jelly Town" },
+  { src: "/hero_images/2.jpg", title: "Raptor" },
+  { src: "/hero_images/3.jpg", title: "Zuko" },
+  { src: "/hero_images/4.jpg", title: "Play Chaos" },
+  { src: "/hero_images/5.jpg", title: "Batman" },
 ];
 
 const INTERVAL = 6000;
