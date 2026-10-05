@@ -9,7 +9,7 @@ const SLIDES = [
   { src: "/hero_images/2.jpg", title: "Raptor" },
   { src: "/hero_images/3.jpg", title: "Zuko" },
   { src: "/hero_images/4.jpg", title: "Play Chaos" },
-  { src: "/hero_images/5.jpg", title: "Batman" },
+  { src: "/hero_images/5.jpg", title: "Rukia" },
 ];
 
 const INTERVAL = 6000;
